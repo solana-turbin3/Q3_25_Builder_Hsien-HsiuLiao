@@ -19,3 +19,13 @@ $ ts-node ./airdrop.ts
 Success! Check out your TX here: https://explorer.solana.com/tx/WVaMoxJrA955oVgU33pcJp9U4eR6DVfEGSGDY2Cj4DZ7CArxhhCpMn1jXEWiHMLwk6KjfzjzkgCjTDP26iWs8mG?cluster=devnet
 
 Done in 2.55s.
+
+airdrop]$ yarn transfer
+
+yarn run v1.22.22
+
+$ ts-node ./transfer.ts
+
+Success! Check out your TX here: https://explorer.solana.com/tx/5d8tW8iXgqkeCdcW6sDvB5rgiSzoNE795VoZ6nRbcErLsLnwQqpk3bUYCtfoesSyUq6SfRpZwX5RWwZcfuvwTg9p?cluster=devnet
+
+Done in 4.55s.
