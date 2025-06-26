@@ -40,3 +40,14 @@ Success! Check out your TX here:
                     https://explorer.solana.com/tx/3eoTLzoYwwmrXR8aV2TSizo5eYeXbGUDfYAXdX2nB5jTPNdVc7HZdZWoQSpj8RFTRyhZbUipfDMPdDwyromwagVf?cluster=devnet
 
 Done in 17.13s.
+
+ airdrop]$ yarn enroll
+
+yarn run v1.22.22
+
+$ ts-node ./enroll.ts
+
+Success! Check out your TX here:
+https://explorer.solana.com/tx/2ef3Z55QRfQugfDjwWzXRVHo6sMt7sRA1tFuYxDNVNSLd3Dfy2XAoyitX9WPSxX4Kcxechn9ayWp9tyVWB2gockV?cluster=devnet
+
+Done in 5.29s.
