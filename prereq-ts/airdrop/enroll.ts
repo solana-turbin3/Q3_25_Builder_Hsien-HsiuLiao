@@ -12,7 +12,16 @@ const connection = new Connection("https://api.devnet.solana.com");
 
 // Create our anchor provider
 const provider = new AnchorProvider(connection, new Wallet(from), {
-commitment: "confirmed"});
+    commitment: "confirmed"
+});
 
 // Create our program
-const program : Program<Turbin3Prereq> = new Program(IDL, provider);
+const program: Program<Turbin3Prereq> = new Program(IDL, provider);
+
+// Create the PDA for our enrollment account
+const account_seeds = [
+    Buffer.from("prereqs"), //A Utf8 Buffer of the string: "prereqs"
+    from.publicKey.toBuffer(), //The Buffer of the public key of the transaction signer
+];
+const [account_key, _account_bump] = PublicKey.findProgramAddressSync(account_seeds, program.programId);
+
