@@ -9,3 +9,13 @@ yarn run v1.22.22
 $ ts-node ./keygen.ts
 
 You've generated a new Solana wallet: 26d2bh9GeJKzHTr72X6U3vEiFUn3RHChyzn1VJ3fkYmE
+
+airdrop]$ yarn airdrop
+
+yarn run v1.22.22
+
+$ ts-node ./airdrop.ts
+
+Success! Check out your TX here: https://explorer.solana.com/tx/WVaMoxJrA955oVgU33pcJp9U4eR6DVfEGSGDY2Cj4DZ7CArxhhCpMn1jXEWiHMLwk6KjfzjzkgCjTDP26iWs8mG?cluster=devnet
+
+Done in 2.55s.
