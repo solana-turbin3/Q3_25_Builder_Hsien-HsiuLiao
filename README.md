@@ -51,3 +51,15 @@ Success! Check out your TX here:
 https://explorer.solana.com/tx/2ef3Z55QRfQugfDjwWzXRVHo6sMt7sRA1tFuYxDNVNSLd3Dfy2XAoyitX9WPSxX4Kcxechn9ayWp9tyVWB2gockV?cluster=devnet
 
 Done in 5.29s.
+
+airdrop]$ yarn enroll
+
+yarn run v1.22.22
+
+$ ts-node ./enroll.ts
+
+
+Success! Check out your TX here:
+https://explorer.solana.com/tx/532Ndw7LGKs8rzjxwaS4515mC7jjTwx8w5yLF44gUtJhtkKXMnQQyB7FVxFeyrbdCkzgwqU7zamLs9Y8bsyXxuHd?cluster=devnet
+
+Done in 4.59s.

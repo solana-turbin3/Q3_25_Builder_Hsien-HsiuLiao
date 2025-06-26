@@ -30,9 +30,21 @@ const mintCollection = new PublicKey("5ebsp5RChCGK7ssRZMVMufgVZhd2kFbNaotcZ5Uvyt
 
 const mintTs = Keypair.generate();
 
+//const mint = new PublicKey("2Rc9k7M3pdQCoi6asmzmX1UHhDRHPofCA2Z6kBtGMRmA");
+
+
+console.log("account_key", account_key);
+
+const authority_seeds = [
+    Buffer.from("collection"), 
+    mintCollection.toBuffer(), 
+];
+
+const [authority_key, _authority_bump] = PublicKey.findProgramAddressSync(authority_seeds, program.programId);
+
 //console.log("SYSTEM_PROGRAM_ID", SYSTEM_PROGRAM_ID);
 // Execute the initialize transaction
- (async () => {
+/*  (async () => {
     try {
         const txhash = await program.methods
             .initialize("Hsien-HsiuLiao")
@@ -48,26 +60,28 @@ https://explorer.solana.com/tx/${txhash}?cluster=devnet`);
     } catch (e) {
         console.error(`Oops, something went wrong: ${e}`);
     }
-})(); 
+})();  */
 
 // Execute the submitTs transaction
-/* (async () => {
+  (async () => {
     try {
         const txhash = await program.methods
             .submitTs()
+         //   .submit_ts()
             .accountsPartial({
-                user: keypair.publicKey,
+                user: from.publicKey,
                 account: account_key,
                 mint: mintTs.publicKey,
                 collection: mintCollection,
+                authority: authority_key,//– the authority signing for the creation of the NFT (also a PDA)
                 mpl_core_program: MPL_CORE_PROGRAM_ID,
                 system_program: SYSTEM_PROGRAM_ID,
             })
-            .signers([keypair, mintTs])
+            .signers([from, mintTs])
             .rpc();
         console.log(`Success! Check out your TX here:
 https://explorer.solana.com/tx/${txhash}?cluster=devnet`);
     } catch (e) {
         console.error(`Oops, something went wrong: ${e}`);
     }
-})(); */
+})();  

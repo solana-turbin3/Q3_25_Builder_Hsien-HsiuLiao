@@ -261,7 +261,7 @@ export type Turbin3Prereq = {
         "args": []
       },
       {
-        "name": "submit_ts",
+        "name": "submitTs",//"submit_ts",
         "discriminator": [
           137,
           241,
@@ -731,7 +731,7 @@ export const IDL: Turbin3Prereq = {
       "args": []
     },
     {
-      "name": "submit_ts",
+      "name": "submitTs",//"submit_ts",
       "discriminator": [
         137,
         241,
