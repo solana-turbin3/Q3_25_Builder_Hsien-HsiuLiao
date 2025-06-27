@@ -22,3 +22,33 @@ successes:
     tests::airdrop
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 1.21s
+
+running 1 test
+test tests::transfer_sol ... ok
+
+successes:
+
+---- tests::transfer_sol stdout ----
+Verification failed
+Success! Check out your TX here: https://explorer.solana.com/tx/2ZsmgQdszn8yrL217WkaQFYo3f4pFTPrdvynQh3Du3tB9sbbNbjsKHjjgm4zbZgWWmnHWNJHyQnfu8Jc1EWScYwE/?cluster=devnet
+
+
+successes:
+    tests::transfer_sol
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 15.46s
+
+running 1 test
+test tests::transfer_sol ... ok
+
+successes:
+
+---- tests::transfer_sol stdout ----
+Signature verified
+Success! Check out your TX here: https://explorer.solana.com/tx/64TC4b9AK4yJ2jiRb5YRGAMsX1gdiU4vhzYyFg1B3NF9rmjbdqkg8pXaZ3TGD5b4sjagbv4SeGgtWZG34EsUNDnm/?cluster=devnet
+
+
+successes:
+    tests::transfer_sol
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 14.49s
