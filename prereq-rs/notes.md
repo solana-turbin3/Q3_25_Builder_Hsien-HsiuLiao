@@ -52,3 +52,19 @@ successes:
     tests::transfer_sol
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 14.49s
+
+running 1 test
+test tests::transfer_sol ... ok
+
+successes:
+
+---- tests::transfer_sol stdout ----
+Signature verified
+Success! Check out your TX here: https://explorer.solana.com/tx/H3pRsMNaz3v4j7zZqGz4KjrBiDRPBaywtgVzvXA9NWQb2gyAAMAqrtdFhT5KYg1PntWXevGnAEVEdjW7dtPY15G/?cluster=devnet
+Success! Entire balance transferred: https://explorer.solana.com/tx/3NHctvKpmeFSFCb9W3qHCQiBGoqCmp5k5rejQdz69EUabSkYdmGVNuzdWswPAqeUaYVJNxbd6yU73CUoq4wWiFwU/?cluster=devnet
+
+
+successes:
+    tests::transfer_sol
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 29.97s
