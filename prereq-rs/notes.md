@@ -68,3 +68,18 @@ successes:
     tests::transfer_sol
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 29.97s
+
+running 1 test
+test tests::enroll ... ok
+
+successes:
+
+---- tests::enroll stdout ----
+Success! Check out your TX here:
+https://explorer.solana.com/tx/5yDBpg3xVFwgkbVz9AkG2PyZoxEYmUKsYLMobHJ9G3kUcjoXwNCquEAas8mjKhqThJXopCP2anA98s2hbE4GfHkE/?cluster=devnet
+
+
+successes:
+    tests::enroll
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 15.46s
