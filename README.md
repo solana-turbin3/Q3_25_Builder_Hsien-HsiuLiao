@@ -3,3 +3,5 @@
 solana-starter
 
 ```yarn install```
+
+```yarn spl_mint```
