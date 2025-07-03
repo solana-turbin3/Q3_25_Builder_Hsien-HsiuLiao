@@ -16,3 +16,7 @@ Day 1
 - https://solana.com/developers/cookbook/tokens/create-mint-account
 - https://solana.com/developers/cookbook/programs/create-pda
 - https://solscan.io/?cluster=devnet
+
+Day 2
+- https://github.com/DecalLabs/gill/tree/master/examples/tokens/src
+- https://gill.site/docs/guides/codama
