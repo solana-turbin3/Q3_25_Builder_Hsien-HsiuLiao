@@ -12,7 +12,10 @@ const connection = new Connection("https://api.devnet.solana.com", commitment);
 const token_decimals = 1_000_000n;
 
 // Mint address
-const mint = new PublicKey("6jocG9wDorGF2Y18T7UrhFvJmYN9e36tfkd83VsuXW4V");
+//const mint = new PublicKey("6jocG9wDorGF2Y18T7UrhFvJmYN9e36tfkd83VsuXW4V"); //Can we ship it?
+
+const mint = new PublicKey("H3yGGGSFLjbFBWPYT2Mg69TJteKnZmFGNBWULrPtFrit"); //A New Token
+
 //const destination = new PublicKey("DcwsdNovKybMa7VMALj3VD8syjahNrrMzDWthmFoCULa");
 
 (async () => {
@@ -33,7 +36,7 @@ const mint = new PublicKey("6jocG9wDorGF2Y18T7UrhFvJmYN9e36tfkd83VsuXW4V");
             mint,
             ata.address,
             keypair,
-            token_decimals*100n
+            token_decimals*10n
         )
         console.log(`Your mint txid: ${mintTx}`);
         //Your mint txid: 23vD9vKdmDMdWo6nVUDt1Mkd455fCTSGYmmM4konfRiVfeZCQrR6322sLivb8nMFZJeKyEBLuUTBFu4iP3SjfWAv
