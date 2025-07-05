@@ -20,3 +20,8 @@ Unable to detect Docker (which is required for 'solana-verify'). Do you have it 
 To install Docker, follow the instructions in the official Docker documentation: 
 https://docs.docker.com/engine/install/
 ℹ yarn 1.22.2 is already installed
+
+$ avm use 0.31.1
+Version 0.31.1 is not installed. Would you like to install? [y/n]
+y
+Now using anchor version 0.31.1.
