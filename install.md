@@ -1,3 +1,5 @@
+How to Set Up Your Solana Development Environment - https://www.youtube.com/watch?v=4UfDM27nWkI
+
 $ npx mucho install
 Need to install the following packages:
 mucho@0.10.0
