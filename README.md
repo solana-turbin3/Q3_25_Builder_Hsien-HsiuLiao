@@ -20,3 +20,8 @@ Day 1
 Day 2
 - https://github.com/DecalLabs/gill/tree/master/examples/tokens/src
 - https://gill.site/docs/guides/codama
+
+Day 3 (RUG day!)
+- https://developers.metaplex.com/token-metadata/guides/javascript/create-an-nft#uploading-the-image
+- https://developers.metaplex.com/token-metadata/guides/javascript/create-an-nft#uploading-the-metadata
+- https://developers.metaplex.com/token-metadata/guides/javascript/create-an-nft#minting-the-nft
