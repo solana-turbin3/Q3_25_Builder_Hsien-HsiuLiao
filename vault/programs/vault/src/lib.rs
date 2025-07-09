@@ -1,6 +1,9 @@
 #![allow(unexpected_cfgs)]
 
-use anchor_lang::prelude::*;
+use anchor_lang::{
+    prelude::*,
+    system_program::{transfer, Transfer},
+};
 
 declare_id!("9mty1m2J4XajzDPSyUgdH8iq7bRtN1SXNhwewAi3M2SA");
 
@@ -40,6 +43,20 @@ pub struct Initialize<'info> {
 
 impl<'info> Initialize<'info> {
     pub fn initialize(&mut self, bumps: &InitializeBumps) -> Result<()> {
+        self.vault_state.vaultstate_bump = bumps.vault_state;
+        self.vault_state.vault_bump = bumps.vault;
+
+        
+        
+        let rent_exempt = Rent::get()?.minimum_balance(0);
+        let cpi_program = self.system_program.to_account_info();
+        let cpi_accounts = Transfer {
+            from: self.user.to_account_info(),
+            to: self.vault.to_account_info(),
+        };
+
+        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
+        transfer(cpi_ctx, rent_exempt)?;
         Ok(())
     }
 }
