@@ -1,4 +1,4 @@
-#![allow(unexpected_cfgs)]
+#![allow(unexpected_cfgs, deprecated)]
 
 use anchor_lang::{
     prelude::*,
