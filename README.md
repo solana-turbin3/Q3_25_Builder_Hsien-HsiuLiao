@@ -25,3 +25,16 @@ Day 3 (RUG day!)
 - https://developers.metaplex.com/token-metadata/guides/javascript/create-an-nft#uploading-the-image
 - https://developers.metaplex.com/token-metadata/guides/javascript/create-an-nft#uploading-the-metadata
 - https://developers.metaplex.com/token-metadata/guides/javascript/create-an-nft#minting-the-nft
+
+WEEK 2 
+
+Day 4 - Vault
+
+Day 5 - Escrow
+- https://www.youtube.com/watch?v=ZMB_OqLIeGw Learn to Build an Escrow Program using Anchor Turbin3 Mike MacCana
+
+Day 6 - AMM
+
+Enrichment - Mike MacCana escrow/swap
+
+Project Proposal
