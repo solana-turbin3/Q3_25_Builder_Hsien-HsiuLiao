@@ -35,18 +35,18 @@ pub mod vault {
 #[derive(Accounts)]
 pub struct Initialize<'info> {
     #[account(mut)]
-    pub user: Signer<'info>,
+    pub vault_user: Signer<'info>,
     #[account(
         init,
-        payer = user, 
-        seeds = [b"state", user.key.as_ref()],
+        payer = vault_user, 
+        seeds = [b"state", vault_user.key.as_ref()],
         bump,
         space = 8 + VaultState::INIT_SPACE
 
     )]
     pub vault_state: Account<'info, VaultState>,
     #[account(
-        
+        mut,
         seeds = [b"vault", vault_state.key().as_ref()],
         bump,
     )]
@@ -65,7 +65,7 @@ impl<'info> Initialize<'info> {
         let rent_exempt = Rent::get()?.minimum_balance(0);
         let cpi_program = self.system_program.to_account_info();
         let cpi_accounts = Transfer {
-            from: self.user.to_account_info(),
+            from: self.vault_user.to_account_info(),
             to: self.vault.to_account_info(),
         };
 
