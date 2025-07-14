@@ -130,12 +130,42 @@ describe("vault", () => {
 
   it("should make a deposit", async () => {
 
-    //console.log("Your transaction signature", tx);
+    const depositAmount = 1 * LAMPORTS_PER_SOL; 
+    const tx = await program.methods
+    .deposit(new anchor.BN(depositAmount))
+    .accountsStrict({
+      user: pubkey,
+      vaultState: vaultState,
+      vault: vault,
+      systemProgram: SystemProgram.programId,
+    }).signers([signerkp]).rpc();
+    
+    console.log("Your transaction signature", tx);
+    // Check the vault balance after deposit
+    const vaultAccount = await provider.connection.getAccountInfo(vault);
+    assert.ok(vaultAccount.lamports >= depositAmount);
   });
 
   it("should withdraw", async () => {
 
-    //console.log("Your transaction signature", tx);
+    //get vault account before withdrawl
+    const vaultAccount = await provider.connection.getAccountInfo(vault);
+     
+    const withdrawAmount = 0.5 * LAMPORTS_PER_SOL; 
+    const tx = await program.methods
+    .withdraw(new anchor.BN(withdrawAmount))
+    .accountsStrict({
+      user: pubkey,
+      vaultState: vaultState,
+      vault: vault,
+      systemProgram: SystemProgram.programId,
+    }).signers([signerkp]).rpc();
+    
+    console.log("Your transaction signature", tx);
+    // Check the vault balance after withdrawal
+    const updatedVaultAccount = await provider.connection.getAccountInfo(vault);
+    assert.ok(updatedVaultAccount.lamports < vaultAccount.lamports);
+    //add another test for difference in account balances
   });
 
   it("should close the vault and vault_state accounts", async () => {
