@@ -11,9 +11,13 @@ vault = "9mty1m2J4XajzDPSyUgdH8iq7bRtN1SXNhwewAi3M2SA"
 [registry]
 url = "https://api.apr.dev"
 
-[provider]
+#[provider]
 cluster = "localnet"
 wallet = "~/.config/solana/id.json"
+
+[provider]
+cluster = "Devnet"
+wallet = "./Turbin3-wallet.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
