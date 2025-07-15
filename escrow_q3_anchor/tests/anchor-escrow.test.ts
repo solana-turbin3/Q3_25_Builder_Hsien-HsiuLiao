@@ -32,17 +32,21 @@ describe("anchor-escrow", () => {
 
   it("Is initialized!", async () => {
     // Add your test here.
+    const seed = new anchor.BN(123);
+    const receive = new anchor.BN(1000);
+    const deposit = new anchor.BN(500);
+
     const tx = await program.methods
-    .make(123, 1000).accountsStrict({
+    .make(seed, receive ,deposit ).accountsPartial({
       maker: signerkp.publicKey, 
-      mintA,
-      mintB,
+     // mintA,
+   //   mintB,
       makerAtaA,
-      escrow,
+    //  escrow,
       vault,
-      associatedTokenProgram,
-      tokenProgram,
-      systemProgram
+    //  associatedTokenProgram,
+   //   tokenProgram,
+   //   systemProgram
     }).rpc();
     console.log("Your transaction signature", tx);
   });
