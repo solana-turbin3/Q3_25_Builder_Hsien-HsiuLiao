@@ -25,7 +25,7 @@ pub mod amm {
         Ok(())
     }
 
-   /*  pub fn deposit(
+    pub fn deposit(
         ctx: Context<Deposit>,
         amount: u64, //amount of lp tokens that depositor wants to get back 
         max_x: u64, //max x tokens depositor willing to deposit
@@ -35,6 +35,6 @@ pub mod amm {
         ctx.accounts.deposit(amount, max_x, max_y)?;
 
         Ok(())
-    } */
+    }
 }
 
