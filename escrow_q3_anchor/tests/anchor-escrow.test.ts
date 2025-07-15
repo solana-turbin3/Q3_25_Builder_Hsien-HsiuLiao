@@ -10,6 +10,8 @@ import {
   Transaction,
   Connection
 } from "@solana/web3.js";
+import { createMint, getOrCreateAssociatedTokenAccount } from '@solana/spl-token';
+
 
 import { assert } from "chai";
 
@@ -28,7 +30,29 @@ describe("anchor-escrow", () => {
 
   const signerkp = Keypair.fromSecretKey(new Uint8Array(wallet));
 
+  let makerAtaA: anchor.Address;
+  let vault: anchor.Address;
+  
   const program = anchor.workspace.anchorEscrow as Program<AnchorEscrow>;
+
+  before(async () => {
+    const mintA = await createMint(connection, signerkp, signerkp.publicKey, null, 6);
+
+    makerAtaA = await getOrCreateAssociatedTokenAccount(
+            connection,
+            signerkp,
+            mintA, 
+            signerkp.publicKey
+        );
+
+        vault = await getOrCreateAssociatedTokenAccount(
+       //   connection,
+       //   signerkp,
+       //   mintA, 
+        //  signerkp.publicKey
+      );
+
+ });
 
   it("Is initialized!", async () => {
     // Add your test here.
