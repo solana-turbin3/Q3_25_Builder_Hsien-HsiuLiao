@@ -7,10 +7,11 @@ import { irysUploader } from "@metaplex-foundation/umi-uploader-irys"
 //const umi = createUmi('https://api.devnet.solana.com');
 const umi = createUmi('https://devnet.helius-rpc.com/?api-key=71d05d9f-5d94-4548-9137-c6c3d9f69b3e');
 
-
+// load keypair from wallet
 let keypair = umi.eddsa.createKeypairFromSecretKey(new Uint8Array(wallet));
 const signer = createSignerFromKeypair(umi, keypair);
 
+// Instantiate the Irys uploader
 umi.use(irysUploader());
 umi.use(signerIdentity(signer));
 
@@ -19,30 +20,7 @@ umi.use(signerIdentity(signer));
         // Follow this JSON structure
         // https://docs.metaplex.com/programs/token-metadata/changelog/v1.0#json-structure
 
-        // const image = ???
-        // const metadata = {
-        //     name: "?",
-        //     symbol: "?",
-        //     description: "?",
-        //     image: "?",
-        //     attributes: [
-        //         {trait_type: '?', value: '?'}
-        //     ],
-        //     properties: {
-        //         files: [
-        //             {
-        //                 type: "image/png",
-        //                 uri: "?"
-        //             },
-        //         ]
-        //     },
-        //     creators: []
-        // };
-        // const myUri = ???
-        // console.log("Your metadata URI: ", myUri);
-
         const image = "https://gateway.irys.xyz/47aj9Yj6EVf2cjUYfNUrsVgnTWZ9ehf15d2kf1mJ8w1d"
-
         const metadata = {
             name: "Andre Hat",
             symbol: "AND",
@@ -61,9 +39,9 @@ umi.use(signerIdentity(signer));
             },
             creators: []
         };
-        const myUri = await umi.uploader.uploadJson(metadata);
 
-      
+        // Upload the metadata to the Irys database and print out the URI
+        const myUri = await umi.uploader.uploadJson(metadata);
         console.log("Your metadata URI: ", myUri); 
 
     }
