@@ -38,3 +38,7 @@ Day 6 - AMM
 Enrichment - Mike MacCana escrow/swap
 
 Project Proposal
+
+WEEK 3
+
+Day 7 - NFT Staking
