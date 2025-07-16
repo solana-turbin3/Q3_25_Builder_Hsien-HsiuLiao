@@ -53,7 +53,7 @@ pub struct Make<'info> {
 }
 
 impl<'info> Make<'info> {
-    pub fn init_esrow(&mut self, seed: u64, receive: u64, bumps: &MakeBumps) -> Result<()> {
+    pub fn init_escrow(&mut self, seed: u64, receive: u64, bumps: &MakeBumps) -> Result<()> {
 
         self.escrow.set_inner(
             Escrow { 
