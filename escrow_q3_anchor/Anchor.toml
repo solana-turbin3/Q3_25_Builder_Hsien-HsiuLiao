@@ -11,9 +11,13 @@ anchor_escrow = "8KiiqftKSSHTE1zF1XmtcWf1zvppaFf9C7z4mmA46p3H"
 [registry]
 url = "https://api.apr.dev"
 
-[provider]
+#[provider]
 cluster = "localnet"
 wallet = "~/.config/solana/id.json"
+
+[provider]
+cluster = "Devnet"
+wallet = "./Turbin3-wallet.json"
 
 [scripts]
 test = "pnpm exec ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
