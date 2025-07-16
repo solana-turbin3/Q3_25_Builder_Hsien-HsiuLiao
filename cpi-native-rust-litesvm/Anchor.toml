@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-cpi_native_rust_litesvmts = "JBQmF5pQzG2jo2i26QjSnuFvzmTqutBCUDmdJk3hcd6u"
+cpi_native_rust_litesvm = "GUX9KWcoDdHNCAoWchhn8hg7PcDr6NtzDSR7G2G2XDRf"
 
 [registry]
 url = "https://api.apr.dev"

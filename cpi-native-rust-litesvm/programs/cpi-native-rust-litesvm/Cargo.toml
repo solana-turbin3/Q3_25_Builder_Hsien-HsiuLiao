@@ -1,12 +1,12 @@
 [package]
-name = "cpi-native-rust-litesvmts"
+name = "cpi-native-rust-litesvm"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "cpi_native_rust_litesvmts"
+name = "cpi_native_rust_litesvm"
 
 [features]
 default = []
