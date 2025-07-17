@@ -33,6 +33,18 @@ describe("vault", () => {
     cluster = "Devnet"
     wallet = "./Turbin3-wallet.json"
 
+    anchor deploy
+
+    Deploying cluster: https://api.devnet.solana.com
+Upgrade authority: ./Turbin3-wallet.json
+Deploying program "vault"...
+Program path: /home/h/Projects/Turbin3-Q3/vault/target/deploy/vault.so...
+Program Id: 5TuUyqdafYE8ftiXGQgN6aoqLQnYP13pkvvQKMDAFSSf
+
+Signature: 5vwkgWL7wyvygjSGz9TbgzFVYFE9YP9Lue8ZNqhkuVyAyckop62UM9GnNgqSXXid1hzE7eGNJLW2LjHdwk1LCUE
+
+Deploy success
+
     then run anchor test --skip-deploy
   */
 
