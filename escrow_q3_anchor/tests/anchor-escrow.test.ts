@@ -34,10 +34,10 @@ describe("anchor-escrow", () => {
 
   const provider = anchor.getProvider();
 
-  const connection = provider.connection;
+ // const connection = provider.connection;
   const commitment: Commitment = "confirmed";
 
-  //const connection = new Connection("https://api.devnet.solana.com");
+  const connection = new Connection("https://api.devnet.solana.com");
 
   const signerkp = Keypair.fromSecretKey(new Uint8Array(wallet));
 
