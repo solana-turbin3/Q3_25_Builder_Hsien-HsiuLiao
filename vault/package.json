@@ -7,7 +7,8 @@
   "dependencies": {
     "@codama/cli": "^1.1.2",
     "@coral-xyz/anchor": "^0.31.1",
-    "gill": "^0.10.2"
+    "gill": "^0.10.2",
+    "litesvm": "^0.2.0"
   },
   "devDependencies": {
     "@types/bn.js": "^5.1.0",
