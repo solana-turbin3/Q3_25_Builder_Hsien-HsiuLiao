@@ -3,6 +3,16 @@ use anchor_spl::token::{Mint, Token};
 
 use crate::state::StakeConfig;
 
+/* First we need to initialize StakeConfig. We need 
+an admin who will be the signer,
+config account where will store info, 
+rewards_mint, a mint account with config as authority
+system_program
+and token_program  (needed for mint account)
+
+initialize will set points, max stake, freeze period
+*/
+
 #[derive(Accounts)]
 pub struct InitializeConfig<'info> {
     #[account(mut)]
