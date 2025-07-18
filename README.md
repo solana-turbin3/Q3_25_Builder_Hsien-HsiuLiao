@@ -3,9 +3,11 @@
 - https://www.anchor-lang.com/docs/installation#solana-cli-basics
 - https://www.anchor-lang.com/docs/quickstart/local
 
+WEEK 1
+
 Day 1
 
-- solana-starter
+- https://github.com/solana-turbin3/solana-starter
 
 ```yarn install```
 
@@ -42,3 +44,10 @@ Project Proposal
 WEEK 3
 
 Day 7 - NFT Staking
+- todo, write claim, unstake, and tests
+
+Day 9 - NFT Marketplace
+- todo finish purchase, delist, tests
+
+User Stories
+
