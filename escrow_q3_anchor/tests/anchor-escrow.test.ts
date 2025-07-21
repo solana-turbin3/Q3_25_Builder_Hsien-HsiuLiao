@@ -53,15 +53,11 @@ describe("anchor-escrow", () => {
 
   const program = anchor.workspace.anchorEscrow as Program<AnchorEscrow>;
 
- 
+
 
   const token_decimals = 1_000_000;
 
-  const seed = new anchor.BN(randomBytes(8));
-  const receive = new anchor.BN(1000);
-  const deposit = new anchor.BN(500);
-
-
+  
 
   const [maker, taker] =
     [new Keypair(), new Keypair(), new Keypair(), new Keypair(),];
@@ -80,6 +76,8 @@ describe("anchor-escrow", () => {
 
   let vault: PublicKey;
 
+  const seed = new anchor.BN(randomBytes(8));
+
 
   const escrow = PublicKey.findProgramAddressSync(
     [Buffer.from("escrow"), maker.publicKey.toBuffer(), seed.toArrayLike(Buffer, "le", 8)],// seed.toBuffer("le", 8)
@@ -88,7 +86,7 @@ describe("anchor-escrow", () => {
 
 
 
-  it("before", async () => {
+  it("airdrop, create mintA, mintB, get vault, makerAta, mint to ATA", async () => {
 
     await Promise.all([maker, taker].map(async (k) => {
 
@@ -99,7 +97,7 @@ describe("anchor-escrow", () => {
 
 
     mintA = await createMint(connection, maker, maker.publicKey, null, 6);
-    console.log("mintA", mintA);
+    // console.log("mintA", mintA);
     mintB = await createMint(connection, taker, taker.publicKey, null, 6);
 
 
@@ -132,7 +130,15 @@ describe("anchor-escrow", () => {
 
   });
 
-  it("Is initialized!", async () => {
+  it("make: init_escrow and deposit", async () => {
+  const receive = new anchor.BN(1000);
+  const deposit = new anchor.BN(500);
+
+
+    // Check the initial balance of the maker's associated token account
+   // const makerAtaABalanceBefore = await connection.getTokenAccountBalance(makerAtaA.address, commitment);
+   // const vaultBalanceBefore = await connection.getTokenAccountBalance(vault, commitment);
+   // console.log(makerAtaABalanceBefore, vaultBalanceBefore)
 
     const tx = await program.methods
       .make(seed, receive, deposit).accountsPartial({
@@ -149,5 +155,33 @@ describe("anchor-escrow", () => {
       .signers([maker])
       .rpc();
     console.log("Your transaction signature", tx);
+
+    // Check the balances after the deposit
+    const makerAtaABalanceAfter = await connection.getTokenAccountBalance(makerAtaA.address);
+    const vaultBalanceAfter = await connection.getTokenAccountBalance(vault);
+    console.log(makerAtaABalanceAfter, vaultBalanceAfter );
+
+    /* // Assert that the maker's balance decreased by the deposit amount
+    assert.equal(
+      makerAtaABalanceAfter.value.amount,
+      (makerAtaABalanceBefore.value.amount - deposit.toNumber()).toString(),
+      "Maker's associated token account balance should decrease by the deposit amount"
+    );
+
+    // Assert that the vault's balance increased by the deposit amount
+    assert.equal(
+      vaultBalanceAfter.value.amount,
+      (vaultBalanceBefore.value.amount + deposit.toNumber()).toString(),
+      "Vault balance should increase by the deposit amount"
+    ); */
   });
+
+  it("refund test", async() => {
+
+  });
+
+  it("take test", async() => {
+
+  });
+
 });
