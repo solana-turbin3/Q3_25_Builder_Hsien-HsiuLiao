@@ -3,5 +3,12 @@ name = "pinocchio-vault"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+no-entrypoint = []
+idl = []
+
 [dependencies]
 pinocchio = "0.8.4"
+
+[lib]
+crate-type = ["cdylib", "lib"]
