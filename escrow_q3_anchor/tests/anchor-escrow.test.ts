@@ -176,9 +176,52 @@ describe("anchor-escrow", () => {
     ); */
   });
 
-  it("refund test", async() => {
+  it("refund test", async () => {
+    // First, ensure that the escrow has been created and the deposit has been made
+    const deposit = new anchor.BN(500);
+    const receive = new anchor.BN(1000);
 
-  });
+    // Check the initial balance of the maker's associated token account before the refund
+   // const makerAtaABalanceBefore = await connection.getTokenAccountBalance(makerAtaA.address, commitment);
+   // const vaultBalanceBefore = await connection.getTokenAccountBalance(vault, commitment);
+
+    // Call the refund method
+    const refundTx = await program.methods
+        .refund()
+        .accountsPartial({
+            maker: maker.publicKey,
+            mintA: mintA,
+            makerAtaA: makerAtaA.address,
+            escrow,
+            vault,
+            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+            tokenProgram: TOKEN_PROGRAM_ID,
+            systemProgram: SystemProgram.programId
+        })
+        .signers([maker])
+        .rpc();
+
+    console.log("Refund transaction signature", refundTx);
+
+    // Check the balances after the refund
+    const makerAtaABalanceAfter = await connection.getTokenAccountBalance(makerAtaA.address, commitment);
+    const vaultBalanceAfter = await connection.getTokenAccountBalance(vault, commitment);
+
+    // Assert that the maker's balance increased by the deposit amount
+   /*  assert.equal(
+        makerAtaABalanceAfter.value.amount,
+        (makerAtaABalanceBefore.value.amount + deposit.toNumber()).toString(),
+        "Maker's associated token account balance should increase by the deposit amount"
+    ); */
+
+    // Assert that the vault's balance decreased by the deposit amount
+   /*  assert.equal(
+        vaultBalanceAfter.value.amount,
+        (vaultBalanceBefore.value.amount - deposit.toNumber()).toString(),
+        "Vault balance should decrease by the deposit amount"
+    ); */
+});
+
 
   it("take test", async() => {
 
