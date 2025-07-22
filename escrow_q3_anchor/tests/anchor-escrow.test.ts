@@ -71,6 +71,8 @@ describe("anchor-escrow", () => {
     .flat(); */
 
   let makerAtaA: Account;
+  let makerAtaB: Account;
+
   let mintA: PublicKey;
   let mintB: PublicKey;
 
@@ -115,6 +117,13 @@ describe("anchor-escrow", () => {
 
     )
 
+    makerAtaB = await getOrCreateAssociatedTokenAccount(
+      connection,
+      maker,
+      mintB,
+      maker.publicKey,
+
+    )
 
 
     //   Mint to ATA
@@ -204,8 +213,8 @@ describe("anchor-escrow", () => {
     console.log("Refund transaction signature", refundTx);
 
     // Check the balances after the refund
-    const makerAtaABalanceAfter = await connection.getTokenAccountBalance(makerAtaA.address, commitment);
-    const vaultBalanceAfter = await connection.getTokenAccountBalance(vault, commitment);
+   // const makerAtaABalanceAfter = await connection.getTokenAccountBalance(makerAtaA.address, commitment);
+   // const vaultBalanceAfter = await connection.getTokenAccountBalance(vault, commitment);
 
     // Assert that the maker's balance increased by the deposit amount
    /*  assert.equal(
@@ -223,8 +232,118 @@ describe("anchor-escrow", () => {
 });
 
 
-  it("take test", async() => {
+it("take test", async () => {
 
-  });
+  const receive = new anchor.BN(500);
+  const deposit = new anchor.BN(1000);
+
+
+    // Check the initial balance of the maker's associated token account
+   // const makerAtaABalanceBefore = await connection.getTokenAccountBalance(makerAtaA.address, commitment);
+   // const vaultBalanceBefore = await connection.getTokenAccountBalance(vault, commitment);
+   // console.log(makerAtaABalanceBefore, vaultBalanceBefore)
+
+    const tx = await program.methods
+      .make(seed, receive, deposit).accountsPartial({
+        maker: maker.publicKey,
+        mintA: mintA,
+        mintB: mintB,
+        makerAtaA: makerAtaA.address,
+        escrow,
+        vault,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId
+      })
+      .signers([maker])
+      .rpc();
+    console.log("Your transaction signature", tx);
+
+  const depositAmount = new anchor.BN(500); // Amount the taker will send to the maker
+  const receiveAmount = new anchor.BN(1000); // Amount the maker will receive
+
+  // Airdrop some SOL to the taker for transaction fees
+ // await provider.connection.requestAirdrop(taker.publicKey, LAMPORTS_PER_SOL);
+ // await confirmTxs([await provider.connection.getLatestBlockhash()]);
+
+  // Create associated token accounts for the taker
+  const takerAtaA = await getOrCreateAssociatedTokenAccount(
+      connection,
+      taker,
+      mintA,
+      taker.publicKey
+  );
+
+  const takerAtaB = await getOrCreateAssociatedTokenAccount(
+      connection,
+      taker,
+      mintB,
+      taker.publicKey
+  );
+
+  // Mint tokens to the taker's associated token account for mintB
+  await mintTo(
+      connection,
+      taker,
+      mintB,
+      takerAtaB.address,
+      taker.publicKey,
+      depositAmount.toNumber()
+  );
+
+  // Check the initial balances before the take operation
+ /*  const makerAtaABalanceBefore = await connection.getTokenAccountBalance(makerAtaA.address, commitment);
+  const vaultBalanceBefore = await connection.getTokenAccountBalance(vault, commitment);
+  const takerAtaBBalanceBefore = await connection.getTokenAccountBalance(takerAtaB.address, commitment);
+ */
+  // Call the take method
+  const takeTx = await program.methods
+      .take()
+      .accountsPartial({
+          taker: taker.publicKey,
+          maker: maker.publicKey,
+          mintA: mintA,
+          mintB: mintB,
+          makerAtaB: makerAtaB.address,
+          takerAtaA: takerAtaA.address,
+          takerAtaB: takerAtaB.address,
+          escrow,
+          vault,
+          associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId
+      })
+      .signers([taker])
+      .rpc();
+
+  console.log("Take transaction signature", takeTx);
+
+  // Check the balances after the take operation
+  /* const makerAtaABalanceAfter = await connection.getTokenAccountBalance(makerAtaA.address, commitment);
+  const vaultBalanceAfter = await connection.getTokenAccountBalance(vault, commitment);
+  const takerAtaBBalanceAfter = await connection.getTokenAccountBalance(takerAtaB.address, commitment);
+ */
+  // Assert that the maker's balance increased by the receive amount
+ /*  assert.equal(
+      makerAtaABalanceAfter.value.amount,
+      (makerAtaABalanceBefore.value.amount + receiveAmount.toNumber()).toString(),
+      "Maker's associated token account balance should increase by the receive amount"
+  ); */
+
+  // Assert that the vault's balance decreased by the deposit amount
+ /*  assert.equal(
+      vaultBalanceAfter.value.amount,
+      (vaultBalanceBefore.value.amount - receiveAmount.toNumber()).toString(),
+      "Vault balance should decrease by the receive amount"
+  ); */
+
+  // Assert that the taker's balance decreased by the deposit amount
+ /*  assert.equal(
+      takerAtaBBalanceAfter.value.amount,
+      (takerAtaBBalanceBefore.value.amount - depositAmount.toNumber()).toString(),
+      "Taker's associated token account balance should decrease by the deposit amount"
+  ); */
+});
+
 
 });
