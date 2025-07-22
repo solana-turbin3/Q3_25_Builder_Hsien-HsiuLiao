@@ -28,9 +28,9 @@ pub mod anchor_escrow {
         Ok(())
     }
 
-   /*  pub fn take(ctx: Context<Take>) -> Result<()> {
+    pub fn take(ctx: Context<Take>) -> Result<()> {
         ctx.accounts.deposit()?;
         ctx.accounts.withdraw_and_close()?;
         Ok(())
-    } */
+    }
 }
