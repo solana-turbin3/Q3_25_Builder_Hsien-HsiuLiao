@@ -34,6 +34,8 @@ Day 4 - Vault
 
 Day 5 - Escrow
 - https://www.youtube.com/watch?v=ZMB_OqLIeGw Learn to Build an Escrow Program using Anchor Turbin3 Mike MacCana
+- https://github.com/ShrinathNR/escrow_q3_anchor/blob/main/programs/anchor-escrow/src/instructions/refund.rs
+
 
 Day 6 - AMM
 
@@ -44,9 +46,12 @@ Project Proposal
 WEEK 3
 
 Day 7 - NFT Staking
+- https://github.com/ASCorreia/NFT-Staking-q3-2025
 - todo, write claim, unstake, and tests
 
 Day 9 - NFT Marketplace
+- https://developers.metaplex.com/token-metadata/pnfts
+- https://github.com/belivenn/anchor-marketplace-2025
 - todo finish purchase, delist, tests
 
 Office Hours
@@ -64,7 +69,11 @@ User Stories
 
 WEEK 4
 
-Day 10
+Day 10 - User Stories feedback
+- https://solana.com/docs/rpc/http/getprogramaccounts
+
+Day 11 - instruction introspection
+- https://docs.anza.xyz/implemented-proposals/instruction_introspection
 
 
 Turbin3 discord links
