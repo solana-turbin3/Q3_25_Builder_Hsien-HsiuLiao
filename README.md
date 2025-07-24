@@ -49,5 +49,25 @@ Day 7 - NFT Staking
 Day 9 - NFT Marketplace
 - todo finish purchase, delist, tests
 
+Office Hours
+nft staking - https://gist.github.com/belivenn/6cbe9ddc5e40096d25f3270da231044a
+escrow - https://gist.github.com/belivenn/ff9e5a64841706b2c859a86a7afce629
+bundles - https://gist.github.com/belivenn/c2176d32ab45bb762b9098f597e4e372
+escrow tests - https://github.com/dotslashapaar/TURBIN3-Q1-25/blob/main/escrow/tests/escrow-sol-a.ts
+mobile apps - https://www.helius.dev/blog/solana-appkit
+https://docs.magicblock.gg/pages/get-started/use-cases/depin
+https://solana.stackexchange.com/questions/1557/then-what-is-the-purpose-of-createwithseed-instruction
+https://www.alchemy.com/overviews/semi-fungible-tokens-sfts
+https://www.cxalem.blog/posts/solana-migration-guide
+
 User Stories
+
+WEEK 4
+
+Day 10
+
+
+Turbin3 discord links
+- https://github.com/wmb-software-consulting/pinocchio-secp256r1-vault
+
 
