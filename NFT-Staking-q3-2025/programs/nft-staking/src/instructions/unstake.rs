@@ -118,13 +118,12 @@ impl<'info> UnStake<'info> {
         // Revoke delegation (remove stake account's authority)
         let cpi_accounts = Revoke {
             source: self.mint_ata.to_account_info(),
-            authority: self.stake_account.to_account_info(),
+            authority: self.user.to_account_info(),
         };
 
-        let cpi_ctx = CpiContext::new_with_signer(
+        let cpi_ctx = CpiContext::new(
             self.token_program.to_account_info(),
             cpi_accounts,
-            signer_seeds,
         );
 
         revoke(cpi_ctx)?;
