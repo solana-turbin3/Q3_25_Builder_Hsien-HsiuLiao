@@ -60,8 +60,6 @@ nft staking - https://gist.github.com/belivenn/6cbe9ddc5e40096d25f3270da231044a
 
 escrow - https://gist.github.com/belivenn/ff9e5a64841706b2c859a86a7afce629
 
-bundles - https://gist.github.com/belivenn/c2176d32ab45bb762b9098f597e4e372
-
 escrow tests - https://github.com/dotslashapaar/TURBIN3-Q1-25/blob/main/escrow/tests/escrow-sol-a.ts
 
 mobile apps - https://www.helius.dev/blog/solana-appkit
@@ -81,7 +79,8 @@ Day 10 - User Stories feedback
 Day 11 - instruction introspection
 - https://docs.anza.xyz/implemented-proposals/instruction_introspection
 
-Day 12 - Voting
+Day 12 - Voting, Governance
+
 
 
 Turbin3 discord links
