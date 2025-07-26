@@ -61,7 +61,7 @@ pub struct UnStake<'info> {
     #[account(
         mut,
         close = user,  // Close account and return rent to user
-        has_one = user,  // Ensure stake account belongs to user
+        constraint = stake_account.owner == user.key() @ StakeError::Unauthorized,  // Ensure stake account belongs to user
         has_one = mint,  // Ensure stake account is for this mint
         seeds = [b"stake".as_ref(), mint.key().as_ref(), config.key().as_ref()],
         bump = stake_account.bump,
@@ -117,7 +117,7 @@ impl<'info> UnStake<'info> {
 
         // Revoke delegation (remove stake account's authority)
         let cpi_accounts = Revoke {
-            to: self.mint_ata.to_account_info(),
+            source: self.mint_ata.to_account_info(),
             authority: self.stake_account.to_account_info(),
         };
 

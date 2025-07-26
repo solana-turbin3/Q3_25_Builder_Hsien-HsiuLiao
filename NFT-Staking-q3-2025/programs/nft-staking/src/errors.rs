@@ -8,4 +8,6 @@ pub enum StakeError {
     FreezePeriodNotMet,
     #[msg("Max stake reached")]
     MaxStakeReached,
+    #[msg("Unauthorized access")]
+    Unauthorized,
 }
