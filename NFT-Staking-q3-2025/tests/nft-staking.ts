@@ -128,5 +128,29 @@ describe("nft-staking", () => {
 
     console.log("\nNFT Staked!");
     console.log("Your transaction signature", tx);
-  })
+  });
+
+  it("Unstake NFT", async() => {
+    const mintAta = getAssociatedTokenAddressSync(new anchor.web3.PublicKey(nftMint.publicKey as PublicKey), provider.wallet.publicKey);
+
+    const nftMetadata = findMetadataPda(umi, {mint: nftMint.publicKey});
+    const nftEdition = findMasterEditionPda(umi, {mint: nftMint.publicKey});
+
+    const tx = await program.methods.unstake()
+    .accountsPartial({
+      user: provider.wallet.publicKey,
+      mint: nftMint.publicKey,
+      collectionMint: collectionMint.publicKey,
+      mintAta,
+      metadata: new anchor.web3.PublicKey(nftMetadata[0]),
+      edition: new anchor.web3.PublicKey(nftEdition[0]),
+      config,
+      stakeAccount,
+      userAccount,
+    })
+    .rpc();
+
+    console.log("\nNFT Unstaked!");
+    console.log("Your transaction signature", tx);
+  });
 });
