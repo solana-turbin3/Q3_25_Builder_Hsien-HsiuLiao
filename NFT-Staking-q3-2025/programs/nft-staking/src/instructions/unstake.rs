@@ -6,7 +6,8 @@ use anchor_spl::{
             ThawDelegatedAccountCpiAccounts
         }, 
         MasterEditionAccount, 
-        Metadata
+        Metadata, 
+        MetadataAccount
     }, 
     token::{
         revoke, 
@@ -58,11 +59,12 @@ pub struct UnStake<'info> {
     )]
     pub config: Account<'info, StakeConfig>,
     #[account(
-        init,
-        payer = user,
-        space = 8 + StakeAccount::INIT_SPACE,
+        mut,
+        close = user,  // Close account and return rent to user
+        has_one = user,  // Ensure stake account belongs to user
+        has_one = mint,  // Ensure stake account is for this mint
         seeds = [b"stake".as_ref(), mint.key().as_ref(), config.key().as_ref()],
-        bump,
+        bump = stake_account.bump,
     )]
     pub stake_account: Account<'info, StakeAccount>,
     #[account(
@@ -78,10 +80,13 @@ pub struct UnStake<'info> {
 
 impl<'info> UnStake<'info> {
     pub fn unstake(&mut self) -> Result<()> {
-        //check freeze period 
+        // Check freeze period 
         let time_elapsed = ((Clock::get()?.unix_timestamp - self.stake_account.staked_at) / 86400) as u32;
 
-        assert!(time_elapsed >= self.config.freeze_period);
+        require!(
+            time_elapsed >= self.config.freeze_period, 
+            StakeError::FreezePeriodNotMet
+        );
 
         let seeds = &[
             b"stake",
@@ -98,7 +103,9 @@ impl<'info> UnStake<'info> {
         let token_program = &self.token_program.to_account_info();
         let metadata_program = &self.metadata_program.to_account_info();
 
+        // Thaw the NFT (unfreeze it)
         ThawDelegatedAccountCpi::new(
+            metadata_program,
             ThawDelegatedAccountCpiAccounts{
                 delegate,
                 token_account,
@@ -106,13 +113,24 @@ impl<'info> UnStake<'info> {
                 mint,
                 token_program,
             }
-        ).invoke_signed();
+        ).invoke_signed(signer_seeds)?;
 
-        self.user_account.amount_staked += 1;
+        // Revoke delegation (remove stake account's authority)
+        let cpi_accounts = Revoke {
+            to: self.mint_ata.to_account_info(),
+            authority: self.stake_account.to_account_info(),
+        };
 
-       
+        let cpi_ctx = CpiContext::new_with_signer(
+            self.token_program.to_account_info(),
+            cpi_accounts,
+            signer_seeds,
+        );
 
-        //revoke authority of ata
+        revoke(cpi_ctx)?;
+
+        // Update user statistics
+        self.user_account.amount_staked -= 1;
 
         Ok(())
     }
