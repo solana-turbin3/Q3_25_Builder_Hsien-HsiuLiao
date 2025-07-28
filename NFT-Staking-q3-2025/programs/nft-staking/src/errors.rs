@@ -10,4 +10,6 @@ pub enum StakeError {
     MaxStakeReached,
     #[msg("Unauthorized access")]
     Unauthorized,
+    #[msg("No points to claim")]
+    NoPointsToClaim,
 }
