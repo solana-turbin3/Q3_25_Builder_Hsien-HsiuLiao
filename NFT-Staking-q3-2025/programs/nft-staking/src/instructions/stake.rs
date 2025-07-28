@@ -130,6 +130,8 @@ impl<'info> Stake<'info> {
         ).invoke_signed(signer_seeds)?;
 
         self.user_account.amount_staked += 1;
+        // Accumulate points based on staked NFTs
+        self.user_account.points += self.config.points_per_stake as u32;
 
         Ok(())
     }

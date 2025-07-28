@@ -130,6 +130,8 @@ impl<'info> UnStake<'info> {
 
         // Update user statistics
         self.user_account.amount_staked -= 1;
+        // Remove points for the unstaked NFT
+        self.user_account.points = self.user_account.points.saturating_sub(self.config.points_per_stake as u32);
 
         Ok(())
     }
