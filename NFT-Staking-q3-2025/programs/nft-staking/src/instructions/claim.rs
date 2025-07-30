@@ -81,9 +81,8 @@ impl<'info> Claim<'info> {
 
         // Mint rewards tokens to user
         let seeds = &[
-            b"rewards",
-            self.config.to_account_info().key.as_ref(),
-            &[self.config.rewards_bump]
+            b"config".as_ref(),
+            &[self.config.bump]
         ];
         let signer_seeds = &[&seeds[..]];
 
