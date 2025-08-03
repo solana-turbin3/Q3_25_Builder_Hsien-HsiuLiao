@@ -47,7 +47,6 @@ WEEK 3
 
 Day 7 - NFT Staking
 - https://github.com/ASCorreia/NFT-Staking-q3-2025
-- todo, write claim, unstake, and tests
 
 Day 9 - NFT Marketplace
 - https://developers.metaplex.com/token-metadata/pnfts
@@ -81,6 +80,17 @@ Day 11 - instruction introspection
 
 Day 12 - Voting, Governance
 
+WEEK 5
+
+Day 13 - Writing Anchor tests
+
+Day 14 - Lazy Account
+
+Day 15 - Architecture diagram review
+
+Sat Gill Testing workshop
+
+WEEK 6 - Enrichment
 
 
 Turbin3 discord links
