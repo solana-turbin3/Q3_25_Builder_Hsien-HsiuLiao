@@ -1,0 +1,15 @@
+{
+  "name": "oracle-switchboard-feed",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@switchboard-xyz/on-demand": "^2.13.3"
+  }
+}
