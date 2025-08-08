@@ -1,0 +1,66 @@
+$ bun run index.ts
+Running simulation...
+
+{"jobs":[{"tasks":[{"httpTask":{"url":"https://depin-loudness.vercel.app/api/get_decibel"}},{"jsonParseTask":{"path":"$.decibel"}}]}]}
+
+Response is good (200)
+{
+  "version": "rc_25_07_24_17_57",
+  "result": "75.5",
+  "results": [
+    "75.5"
+  ],
+  "receipts": []
+}
+Storing and creating the feed...
+
+Using Payer: Coop1aAuEqbN3Pm9TzohXvS3kM4zpp3pJZ9D4M2uWXH2 
+
+{
+  context: {
+    apiVersion: "2.3.6",
+    slot: 399871139,
+  },
+  value: {
+    accounts: null,
+    err: null,
+    innerInstructions: null,
+    loadedAccountsDataSize: 247755,
+    logs: [
+      "Program Aio4gaXjXzJNVLtzwtNVmSqGKpANtXhybbkhtAC94ji2 invoke [1]", "Program log: Instruction: PullFeedInit",
+      "Program 11111111111111111111111111111111 invoke [2]", "Program 11111111111111111111111111111111 success",
+      "Program ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL invoke [2]", "Program log: Create",
+      "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [3]", "Program log: Instruction: GetAccountDataSize",
+      "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 1569 of 135810 compute units",
+      "Program return: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA pQAAAAAAAAA=", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+      "Program 11111111111111111111111111111111 invoke [3]", "Program 11111111111111111111111111111111 success",
+      "Program log: Initialize the associated token account", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [3]",
+      "Program log: Instruction: InitializeImmutableOwner", "Program log: Please upgrade to SPL Token 2022 for immutable owner support",
+      "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 1405 of 129223 compute units",
+      "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [3]",
+      "Program log: Instruction: InitializeAccount3", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 3158 of 125339 compute units",
+      "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success", "Program ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL consumed 22408 of 144285 compute units",
+      "Program ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL success", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [2]",
+      "Program log: Instruction: SetAuthority", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 2795 of 109476 compute units",
+      "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success", "Program log: Creating LUT with slot: eJqPHJDLa3VUBNQm66YRGgJokk2J8dc7xJ9CE4pLick, 399871106",
+      "Program AddressLookupTab1e1111111111111111111111111 invoke [2]", "Program log: Instruction: CreateLookupTable",
+      "Program 11111111111111111111111111111111 invoke [3]", "Program 11111111111111111111111111111111 success",
+      "Program 11111111111111111111111111111111 invoke [3]", "Program 11111111111111111111111111111111 success",
+      "Program 11111111111111111111111111111111 invoke [3]", "Program 11111111111111111111111111111111 success",
+      "Program AddressLookupTab1e1111111111111111111111111 consumed 10647 of 83230 compute units",
+      "Program AddressLookupTab1e1111111111111111111111111 success", "Program AddressLookupTab1e1111111111111111111111111 invoke [2]",
+      "Program log: Instruction: ExtendLookupTable", "Program 11111111111111111111111111111111 invoke [3]",
+      "Program 11111111111111111111111111111111 success", "Program AddressLookupTab1e1111111111111111111111111 consumed 6556 of 64120 compute units",
+      "Program AddressLookupTab1e1111111111111111111111111 success", "Program Aio4gaXjXzJNVLtzwtNVmSqGKpANtXhybbkhtAC94ji2 consumed 110943 of 167017 compute units",
+      "Program Aio4gaXjXzJNVLtzwtNVmSqGKpANtXhybbkhtAC94ji2 success", "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+      "Program ComputeBudget111111111111111111111111111111 success", "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+      "Program ComputeBudget111111111111111111111111111111 success"
+    ],
+    replacementBlockhash: null,
+    returnData: null,
+    unitsConsumed: 111243,
+  },
+}
+Feed 6JgUWRNpHJFYP3qCzHzzjCTnMCrZ9hb1RLGUuZrMt8eB initialized: 5iNQ1sJgnnPhfnAnjboFbUkrGN83RcdEjDxKSW1Aw5iv4uiQgXb68hdwnHtBXLB7HvjdPCxJtjMC53t1KHs4yyqN
+
+https://ondemand.switchboard.xyz/solana/devnet/feed/6JgUWRNpHJFYP3qCzHzzjCTnMCrZ9hb1RLGUuZrMt8eB

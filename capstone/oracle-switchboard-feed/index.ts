@@ -15,12 +15,12 @@ const jobs: OracleJob[] = [
     tasks: [
       {
         httpTask: {
-          url: "https://binance.com/api/v3/ticker/price",
+          url: "https://depin-loudness.vercel.app/api/get_decibel",
         },
       },
       {
         jsonParseTask: {
-          path: "$[?(@.symbol == 'BTCUSDT')].price",
+          path: "$.decibel",
         },
       },
     ],
@@ -76,7 +76,7 @@ console.log("Using Payer:", payer.publicKey.toBase58(), "\n");
 const { feedHash } = await crossbarClient.store(queue.pubkey.toBase58(), jobs);
 const [pullFeed, feedKeypair] = PullFeed.generate(queue.program);
 const initIx = await pullFeed.initIx({
-  name: "BTC Price Feed", // the feed name (max 32 bytes)
+  name: "Decibel Feed", // the feed name (max 32 bytes)
   queue: queue.pubkey, // the queue of oracles to bind to
   maxVariance: 1.0, // the maximum variance allowed for the feed results
   minResponses: 1, // minimum number of responses of jobs to allow
