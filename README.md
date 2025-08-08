@@ -92,6 +92,12 @@ Sat Gill Testing workshop
 
 WEEK 6 - Enrichment
 
+- Fuzz testing
+- Wallets
+- Open source contribution
+- Gaming
+- Surfpool
+
 
 Turbin3 discord links
 - https://github.com/wmb-software-consulting/pinocchio-secp256r1-vault
