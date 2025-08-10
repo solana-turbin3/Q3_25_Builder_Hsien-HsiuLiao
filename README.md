@@ -3,7 +3,7 @@
 - https://www.anchor-lang.com/docs/installation#solana-cli-basics
 - https://www.anchor-lang.com/docs/quickstart/local
 
-WEEK 1
+WEEK 1 July 1-3
 
 Day 1
 
@@ -28,7 +28,7 @@ Day 3 (RUG day!)
 - https://developers.metaplex.com/token-metadata/guides/javascript/create-an-nft#uploading-the-metadata
 - https://developers.metaplex.com/token-metadata/guides/javascript/create-an-nft#minting-the-nft
 
-WEEK 2 
+WEEK 2 July 8-10
 
 Day 4 - Vault
 
@@ -43,7 +43,7 @@ Enrichment - Mike MacCana escrow/swap
 
 Project Proposal
 
-WEEK 3
+WEEK 3 July 15-17
 
 Day 7 - NFT Staking
 - https://github.com/ASCorreia/NFT-Staking-q3-2025
@@ -70,7 +70,7 @@ mobile apps - https://www.helius.dev/blog/solana-appkit
 
 User Stories
 
-WEEK 4
+WEEK 4 July 22-24
 
 Day 10 - User Stories feedback
 - https://solana.com/docs/rpc/http/getprogramaccounts
@@ -78,9 +78,9 @@ Day 10 - User Stories feedback
 Day 11 - instruction introspection
 - https://docs.anza.xyz/implemented-proposals/instruction_introspection
 
-Day 12 - Voting, Governance
+Day 12 - Magicblock, Voting, Governance
 
-WEEK 5
+WEEK 5 July 29-31
 
 Day 13 - Writing Anchor tests
 
@@ -90,7 +90,7 @@ Day 15 - Architecture diagram review
 
 Sat Gill Testing workshop
 
-WEEK 6 - Enrichment
+WEEK 6 - Enrichment Aug 5-7
 
 - Fuzz testing
 - Wallets
