@@ -77,6 +77,7 @@ Day 10 - User Stories feedback
 
 Day 11 - instruction introspection
 - https://docs.anza.xyz/implemented-proposals/instruction_introspection
+- https://learn.blueshift.gg/en/courses/instruction-introspection/introduction
 
 Day 12 - Magicblock, Voting, Governance
 
