@@ -1,11 +1,18 @@
 use anchor_lang::prelude::*;
 
-use crate::state::UserAccount;
+use crate::state::{UserAccount, Venue, Submission, Config};
 
 #[derive(Accounts)]
+#[instruction(venue_name: String)]
 pub struct Initialize<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
+    #[account(
+
+        seeds = [b"loudness_config".as_ref()],
+        bump,
+    )]
+    pub config: Account<'info, Config>,
     #[account(
         init,
         payer = user,
@@ -17,7 +24,7 @@ pub struct Initialize<'info> {
     #[account(
         init_if_needed,
         payer = user,
-        seeds = [program.key().as_ref(), venue_name.as_str().as_bytes()],
+        seeds = [config.key().as_ref(), venue_name.as_str().as_bytes()],
         bump,
         space = 8 + Venue::INIT_SPACE,
         )]
