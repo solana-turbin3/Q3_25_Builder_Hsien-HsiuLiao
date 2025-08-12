@@ -80,6 +80,7 @@ Day 11 - instruction introspection
 - https://learn.blueshift.gg/en/courses/instruction-introspection/introduction
 
 Day 12 - Magicblock, Voting, Governance
+- https://docs.magicblock.gg/pages/get-started/use-cases/depin
 
 WEEK 5 July 29-31
 
