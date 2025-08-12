@@ -1,3 +1,5 @@
+#![allow(unexpected_cfgs, deprecated)]
+
 use anchor_lang::prelude::*;
 
 declare_id!("3chRm8Uw232StQpy6G5nVAokSz7bTiUN4e6pvB95PRw2");
@@ -18,15 +20,21 @@ pub mod anchor_loudness {
         ctx.accounts.initialize_config( &ctx.bumps)
     }
 
-    pub fn initialize_user(ctx: Context<Initialize>) -> Result<()> {
+    pub fn initialize_user(ctx: Context<InitializeUser>) -> Result<()> {
         ctx.accounts.initialize_user(&ctx.bumps)
     }
 
-   
+    pub fn get_sound_level<'a>(ctx: Context<SwitchboardFeed>) -> Result<()> {
+        //when driver arrives or leaves
+        ctx.accounts.get_feed_data()?;
+        Ok(())
+    }
 
+   
+/*
     pub fn claim(ctx: Context<Claim>) -> Result<()> {
         ctx.accounts.claim()
-    }
+    } */
 }
 
 
