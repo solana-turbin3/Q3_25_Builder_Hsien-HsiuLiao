@@ -8,9 +8,18 @@ describe("anchor-loudness", () => {
 
   const program = anchor.workspace.anchorLoudness as Program<AnchorLoudness>;
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
+  it("Initialize Config Account", async () => {
+    const tx = await program.methods.initializeConfig(10, 10, 0)
+    .accountsPartial({
+      admin: provider.wallet.publicKey,
+      config,
+      rewardsMint,
+      systemProgram: anchor.web3.SystemProgram.programId,
+      tokenProgram: TOKEN_PROGRAM_ID,
+    })
+    .rpc();
+    console.log("\nConfig Account Initialized!");
     console.log("Your transaction signature", tx);
   });
+  
 });
