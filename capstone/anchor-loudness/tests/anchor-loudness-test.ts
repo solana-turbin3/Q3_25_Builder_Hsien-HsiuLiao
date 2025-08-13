@@ -79,12 +79,12 @@ describe("anchor-loudness", () => {
   )[0];
 
   //airdrop
-  it("Airdrop", async () => {
+  xit("Airdrop", async () => {
     await anchor.getProvider().connection.requestAirdrop(admin.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL)
       .then(confirmTx);
   });
 
-  it("Initialize Config Account", async () => {
+  xit("Initialize Config Account", async () => {
     const tx = await program.methods.initializeConfig()
       .accountsPartial({
         admin: admin.publicKey,
@@ -102,14 +102,52 @@ describe("anchor-loudness", () => {
     console.log("Your transaction signature", tx);
   });
 
-  it("Initialize User Account", async () => {
+  xit("Initialize User Account", async () => {
     const tx = await program.methods.initializeUser()
       .accountsPartial({
         user: user.publicKey,
         userAccount,
-        systemProgram: anchor.web3.SystemProgram.programId,
+        systemProgram: SystemProgram.programId,
       })
       .signers([user])
+      .rpc()
+      .then(confirm)
+      .then(log);
+
+    console.log("\nUser Account Initialized!");
+    console.log("Your transaction signature", tx);
+  });
+
+  it("Get sound level", async () => {
+    const loudnessProgram = anchor.workspace.anchorLoudness as Program<AnchorLoudness>;
+
+    const feed = new PublicKey("6JgUWRNpHJFYP3qCzHzzjCTnMCrZ9hb1RLGUuZrMt8eB");
+
+   // const { keypair, connection, program } = await sb.AnchorUtils.loadEnv();
+
+   // const feedAccountInfo = await connection.getAccountInfo(feed);
+   // console.log("feedAccountInfo", feedAccountInfo.data.toString());
+    
+
+   // const sbProgram = program;
+
+    //const feedAccount = new sb.PullFeed(sbProgram!, feed);
+
+    //await feedAccount.preHeatLuts();
+
+
+/* 
+    const [pullIx, responses, _ok, luts] = await feedAccount.fetchUpdateIx({
+      numSignatures: 3,
+    });
+ */
+
+    const tx = await loudnessProgram.methods.getSoundLevel()
+      .accountsPartial({
+        feed: feed,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([])
       .rpc()
       .then(confirm)
       .then(log);
