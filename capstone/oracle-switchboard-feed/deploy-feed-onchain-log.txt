@@ -64,3 +64,25 @@ Using Payer: Coop1aAuEqbN3Pm9TzohXvS3kM4zpp3pJZ9D4M2uWXH2
 Feed 6JgUWRNpHJFYP3qCzHzzjCTnMCrZ9hb1RLGUuZrMt8eB initialized: 5iNQ1sJgnnPhfnAnjboFbUkrGN83RcdEjDxKSW1Aw5iv4uiQgXb68hdwnHtBXLB7HvjdPCxJtjMC53t1KHs4yyqN
 
 https://ondemand.switchboard.xyz/solana/devnet/feed/6JgUWRNpHJFYP3qCzHzzjCTnMCrZ9hb1RLGUuZrMt8eB
+
+when cranking the feed, it will ask for number of respsones
+after submitting number of respsones, it will pull the responses from the feed and after successful retrieval, 
+it will send the transaction to solana cluster and ask for a signer
+if successful, you should see updated submssions and value
+
+anchor program getting value
+feed.value() now expects an argument of type &anchor_lang::prelude::Clock
+
+pull_feed.rs(386, 12): method defined here
+
+ /// The median value of the submissions needed for quorom size
+ /// Fails if the result is not valid or stale.
+ pub fn value(&self, clock: &Clock) -> Result<Decimal, OnDemandError> {
+     if self.result.result_slot().unwrap_or(0) < clock.slot - self.max_staleness as u64 {
+         return Err(OnDemandError::StaleResult);
+     }
+     self.result.value().ok_or(OnDemandError::StaleResult)
+ }
+
+ if you have 6 submissions, 1 per block, (solana block time 400ms),
+ getting the feed value will fail/become stale after 4 minutes 
