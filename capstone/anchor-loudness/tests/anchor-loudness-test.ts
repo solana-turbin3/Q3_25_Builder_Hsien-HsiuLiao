@@ -102,6 +102,14 @@ describe("anchor-loudness", () => {
     console.log("Your transaction signature", tx);
   });
 
+  it("Get admin account", async () => {
+    const fetchProgramConfigAccount = await program.account.config.fetch(config);
+
+    console.log("\nThe admin is ", fetchProgramConfigAccount.admin.toBase58());
+   
+    assert.equal(fetchProgramConfigAccount.admin.toBase58(), admin.publicKey.toBase58());
+  });
+
   xit("Initialize User Account", async () => {
     const tx = await program.methods.initializeUser()
       .accountsPartial({
