@@ -110,7 +110,7 @@ describe("anchor-loudness", () => {
     assert.equal(fetchProgramConfigAccount.admin.toBase58(), admin.publicKey.toBase58());
   });
 
-  xit("Initialize User Account", async () => {
+  it("Initialize User Account", async () => {
     const tx = await program.methods.initializeUser()
       .accountsPartial({
         user: user.publicKey,
@@ -164,4 +164,19 @@ describe("anchor-loudness", () => {
     console.log("Your transaction signature", tx);
   });
 
+  it("Close User Account", async () => {
+    const tx = await program.methods.closeUser()
+      .accountsPartial({
+        user: user.publicKey,
+        userAccount,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([user])
+      .rpc()
+      .then(confirm)
+      .then(log);
+
+    console.log("\nUser Account Closed!");
+    console.log("Your transaction signature", tx);
+  });
 });
