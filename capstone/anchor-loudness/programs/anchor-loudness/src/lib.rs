@@ -29,14 +29,20 @@ pub mod anchor_loudness {
         Ok(())
     }
 
-    pub fn close_user(ctx: Context<CloseUser>) -> Result<()> {
-        ctx.accounts.close_user(&ctx.bumps)
-    }
+    
 
 /*
     pub fn claim(ctx: Context<Claim>) -> Result<()> {
         ctx.accounts.claim()
     } */
+
+    pub fn close_user(ctx: Context<CloseUser>) -> Result<()> {
+        ctx.accounts.close_user(&ctx.bumps)
+    }
+
+    pub fn close_config(ctx: Context<CloseConfig>) -> Result<()> {
+        ctx.accounts.close_config(&ctx.bumps)
+    }
 }
 
 
