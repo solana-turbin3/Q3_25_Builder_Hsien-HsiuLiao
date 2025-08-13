@@ -1,4 +1,4 @@
-use anchor_lang::{prelude::*, solana_program::clock, system_program::{transfer, Transfer}};
+use anchor_lang::{prelude::*, system_program::{Transfer, transfer}};
 use switchboard_on_demand::on_demand::accounts::pull_feed::PullFeedAccountData;
 //use switchboard_on_demand::prelude::rust_decimal::Decimal;
 
@@ -31,14 +31,13 @@ impl <'info> SwitchboardFeed<'info> {
        let clock = Clock::get()?;
 
        //this section may not be needed
-       let max_staleness = 200;
-        let min_samples = 7;
+       let max_staleness = 200; //check sb ondemand explorer
+        let min_samples = 7; //experiment with different values
         let only_positive = true;
 
         let value = feed.get_value(&clock, max_staleness, min_samples, only_positive);
-        msg!("feed value: {:?}", value);
+        msg!("feed.get_value: {:?}", value);
 
-      // msg!(" clock: {:?}", &clock);
        msg!("decibels: {:?}", feed.value(&clock));
       
        Ok(())
