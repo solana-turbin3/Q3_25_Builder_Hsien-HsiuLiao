@@ -1,0 +1,21 @@
+https://www.anchor-lang.com/docs/quickstart/local#deploy-to-devnet
+
+https://solana.com/docs/programs/deploying#advanced-authority-transfer
+
+after deployment and using the default keypair as the current authority:
+
+$ solana program set-upgrade-authority ./target/deploy/anchor_loudness-keypair.json --new-
+upgrade-authority ../Turbin3-wallet.json
+Account Type: Program
+Authority: Coop1aAuEqbN3Pm9TzohXvS3kM4zpp3pJZ9D4M2uWXH2
+
+Deploying cluster: https://api.devnet.solana.com
+Upgrade authority: ../Turbin3-wallet.json
+Deploying program "anchor_loudness"...
+Program path: /home/h/Projects/Turbin3-Q3/capstone/anchor-loudness/target/deploy/anchor_loudness.so...
+Program Id: 3chRm8Uw232StQpy6G5nVAokSz7bTiUN4e6pvB95PRw2
+
+Signature: 2x3YsS7y9G8qLi9ymAxGijJ4gXV3xXnuiEkQoppZhT2LSyqz5LEyRVU73rTFPDqK5uAQ19MvMS89CAtq3UXCXMBM
+
+Deploy success
+
