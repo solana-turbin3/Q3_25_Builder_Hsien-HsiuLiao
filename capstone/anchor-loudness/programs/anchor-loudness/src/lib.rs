@@ -17,7 +17,7 @@ pub mod anchor_loudness {
     use super::*;
 
     pub fn initialize_config(ctx: Context<InitializeConfig>) -> Result<()> {
-        ctx.accounts.initialize_config( &ctx.bumps)
+        ctx.accounts.initialize_config(&ctx.bumps)
     }
 
     pub fn initialize_user(ctx: Context<InitializeUser>) -> Result<()> {
@@ -25,12 +25,14 @@ pub mod anchor_loudness {
     }
 
     pub fn get_sound_level<'a>(ctx: Context<SwitchboardFeed>) -> Result<()> {
-        //when driver arrives or leaves
         ctx.accounts.get_feed_data()?;
         Ok(())
     }
 
-   
+    pub fn close_user(ctx: Context<CloseUser>) -> Result<()> {
+        ctx.accounts.close_user(&ctx.bumps)
+    }
+
 /*
     pub fn claim(ctx: Context<Claim>) -> Result<()> {
         ctx.accounts.claim()
