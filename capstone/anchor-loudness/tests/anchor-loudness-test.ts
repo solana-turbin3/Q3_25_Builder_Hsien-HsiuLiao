@@ -79,12 +79,12 @@ describe("anchor-loudness", () => {
   )[0];
 
   //airdrop
-  xit("Airdrop", async () => {
+  it("Airdrop", async () => {
     await anchor.getProvider().connection.requestAirdrop(admin.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL)
       .then(confirmTx);
   });
 
-  xit("Initialize Config Account", async () => {
+  it("Initialize Config Account", async () => {
     const tx = await program.methods.initializeConfig()
       .accountsPartial({
         admin: admin.publicKey,
@@ -187,7 +187,7 @@ describe("anchor-loudness", () => {
       .accountsPartial({
         admin: admin.publicKey,
         config,
-        rewardsMint,
+      //  rewardsMint,
         systemProgram: SystemProgram.programId,
         tokenProgram: TOKEN_PROGRAM_ID,
       })
