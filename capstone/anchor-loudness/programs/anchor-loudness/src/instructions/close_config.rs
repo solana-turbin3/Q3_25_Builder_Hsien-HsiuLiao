@@ -26,7 +26,7 @@ pub struct CloseConfig<'info> {
 }
 
 impl<'info> CloseConfig<'info> {
-    pub fn initialize_config(&mut self,  bumps: &CloseConfigBumps) -> Result<()> {
+    pub fn close_config(&mut self,  bumps: &CloseConfigBumps) -> Result<()> {
        //require admin
  
         Ok(())
