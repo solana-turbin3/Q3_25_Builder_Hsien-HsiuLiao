@@ -160,7 +160,7 @@ describe("anchor-loudness", () => {
       .then(confirm)
       .then(log);
 
-    console.log("\nUser Account Initialized!");
+    console.log("\nFeed submitted!");
     console.log("Your transaction signature", tx);
   });
 
@@ -179,4 +179,25 @@ describe("anchor-loudness", () => {
     console.log("\nUser Account Closed!");
     console.log("Your transaction signature", tx);
   });
+
+  it("Close Config Account", async () => {
+    console.log("Config account owner:", (await program.provider.connection.getAccountInfo(config))?.owner.toBase58());
+    console.log("Rewards mint owner:", (await program.provider.connection.getAccountInfo(rewardsMint))?.owner.toBase58());
+    const tx = await program.methods.closeConfig()
+      .accountsPartial({
+        admin: admin.publicKey,
+        config,
+        rewardsMint,
+        systemProgram: SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .signers([admin])
+      .rpc()
+      .then(confirm)
+      .then(log);
+
+    console.log("\nConfig Account Closed!");
+    console.log("Your transaction signature", tx);
+  });
+
 });
