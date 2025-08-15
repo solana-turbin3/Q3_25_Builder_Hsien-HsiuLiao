@@ -221,7 +221,13 @@ describe("anchor-loudness", () => {
       commitment: "confirmed",  // Instead of "finalized"
       filters: [
         {
-          dataSize: 52,
+          dataSize: 52, //size of submission account/struct
+        },
+        {
+          memcmp: {
+            bytes: user.publicKey.toBase58(), //in submission struct, concert_goer/user is after discriminator
+            offset: 8,  // ✅ Skip 8-byte Anchor discriminator
+          },
         },
       ],
     };
