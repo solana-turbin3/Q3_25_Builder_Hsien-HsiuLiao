@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token::{mint_to, Mint, MintTo, Token, TokenAccount}};
 
-use crate::{errors::ErrorType, state::{Config, UserAccount}};
+use crate::{errors::Error, state::{Config, UserAccount}};
 
 /*
 This instruction allows a user to claim their accumulated points and receive rewards tokens.
@@ -35,43 +35,43 @@ One-time claiming: Points are reset to 0 after claiming, preventing double-spend
 pub struct Claim<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
-  /*   #[account(
-        seeds = [b"config".as_ref()],
+    #[account(
+        seeds = [b"loudness_config".as_ref()],
         bump = config.bump,
     )]
-    pub config: Account<'info, StakeConfig>, */
-  /*   #[account(
+    pub config: Account<'info, Config>,
+    #[account(
         mut,
         seeds = [b"user".as_ref(), user.key().as_ref()],
         bump = user_account.bump,
     )]
-    pub user_account: Account<'info, UserAccount>, */
- /*    #[account(
+    pub user_account: Account<'info, UserAccount>,
+    #[account(
         init_if_needed,
         payer = user,
         associated_token::mint = rewards_mint,
         associated_token::authority = user,
     )]
-    pub user_rewards_ata: Account<'info, TokenAccount>, */
- /*    #[account(
+    pub user_rewards_ata: Account<'info, TokenAccount>,
+    #[account(
         mut,
         seeds = [b"rewards".as_ref(), config.key().as_ref()],
         bump = config.rewards_bump,
     )]
-    pub rewards_mint: Account<'info, Mint>, */
+    pub rewards_mint: Account<'info, Mint>,
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
 }
 
 impl<'info> Claim<'info> {
-   /*  pub fn claim(&mut self) -> Result<()> {
+    pub fn claim(&mut self) -> Result<()> {
         // Use accumulated points from user account
-        let points_to_claim = self.user_account.points;
+        let points_to_claim = self.user_account.num_of_submissions;
         
         require!(
             points_to_claim > 0,
-            StakeError::NoPointsToClaim
+            Error::NoPointsToClaim
         );
 
         // Calculate rewards tokens to mint (1 token per point)
@@ -79,7 +79,7 @@ impl<'info> Claim<'info> {
 
         // Mint rewards tokens to user
         let seeds = &[
-            b"config".as_ref(),
+            b"loudness_config".as_ref(),
             &[self.config.bump]
         ];
         let signer_seeds = &[&seeds[..]];
@@ -99,8 +99,8 @@ impl<'info> Claim<'info> {
         mint_to(cpi_ctx, tokens_to_mint as u64)?;
 
         // Reset user points to 0 after claiming
-        self.user_account.points = 0;
+        self.user_account.num_of_submissions = 0;
 
         Ok(())
-    } */
+    }
 }
