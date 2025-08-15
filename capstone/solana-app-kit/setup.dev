@@ -1,0 +1,88 @@
+mobile-appkit-loudness]$ eas init
+★ eas-cli@16.17.4 is now available.
+To upgrade, run:
+npm install -g eas-cli
+Proceeding with outdated version.
+
+✔ Would you like to create a project for ---? … yes
+✔ Created ---
+✔ Project successfully linked (ID: ---) (modified app.json)
+
+mobile-appkit-loudness]$ npx eas build --profile development --platform android
+★ eas-cli@16.17.4 is now available.
+To upgrade, run:
+npm install -g eas-cli
+Proceeding with outdated version.
+
+Resolved "development" environment for the build. Learn more: https://docs.expo.dev/eas/environment-variables/#setting-the-environment-for-your-builds
+No environment variables with visibility "Plain text" and "Sensitive" found for the "development" environment on EAS.
+
+Specified value for "android.package" in app.json is ignored because an android directory was detected in the project.
+EAS Build will use the value found in the native code.
+No remote versions are configured for this project, versionCode will be initialized based on the value from the local project.
+✔ Initialized versionCode with 1.
+✔ Using remote Android credentials (Expo server)
+✔ Generate a new Android Keystore? … yes
+Detected that you do not have keytool installed locally.
+✖ Generating keystore in the cloud...
+Request failed: 500 (Internal Server Error)
+    Error: build command failed.
+
+mobile-appkit-loudness]$ npx eas build --profile development --platform android
+★ eas-cli@16.17.4 is now available.
+To upgrade, run:
+npm install -g eas-cli
+Proceeding with outdated version.
+
+Resolved "development" environment for the build. Learn more: https://docs.expo.dev/eas/environment-variables/#setting-the-environment-for-your-builds
+No environment variables with visibility "Plain text" and "Sensitive" found for the "development" environment on EAS.
+
+Specified value for "android.package" in app.json is ignored because an android directory was detected in the project.
+EAS Build will use the value found in the native code.
+✔ Using remote Android credentials (Expo server)
+✔ Generate a new Android Keystore? … yes
+Detected that you do not have keytool installed locally.
+✔ Generating keystore in the cloud...
+✔ Created keystore
+
+Compressing project files and uploading to EAS Build. Learn more: https://expo.fyi/eas-build-archive
+✔ Compressed project files 10s (35.4 MB)
+✔ Uploaded to EAS 51s
+⌛️ Computing the project fingerprint is taking longer than expected...
+⏩ To skip this step, set the environment variable: EAS_SKIP_AUTO_FINGERPRINT=1
+✔ Computed project fingerprint
+
+See logs: https://expo.dev/accounts/---
+
+Waiting for build to complete. You can press Ctrl+C to exit.
+✔ Build finished
+
+🤖 Open this link on your Android devices (or scan the QR code) to install the app:
+
+
+🔎 TIP: You are using a build configuration that could benefit from using eas build:dev command. Run it to install and run cached development build, or create a new one if a compatible build doesn't exist yet.
+
+
+create .env.local
+
+
+
+$ pnpm dev --tunnel
+
+
+🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
+🟢                                                     🟢
+🟢              STARTING IN DEV MODE                   🟢
+🟢                                                     🟢
+🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
+
+
+env: load .env.local
+env: export CLUSTER RPC_URL ....
+
+Starting Metro Bundler
+Tunnel connected.
+Tunnel ready.
+
+QR code
+
