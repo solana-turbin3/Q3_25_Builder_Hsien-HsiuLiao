@@ -15,6 +15,7 @@ import * as sb from "@switchboard-xyz/on-demand";
 import { assert } from "chai";
 
 import wallet from "../../Turbin3-wallet.json";
+import { publicKey } from "@coral-xyz/anchor/dist/cjs/utils";
 
 describe("anchor-loudness", () => {
   // Configure the client to use the local cluster.
@@ -78,8 +79,21 @@ describe("anchor-loudness", () => {
     program.programId
   )[0];
 
+  const venueName = "Madison Sqaure Garden";
+
+  const venue = PublicKey.findProgramAddressSync(
+    [config.toBuffer(), Buffer.from(venueName, 'utf8')],
+    program.programId
+  )[0];
+
+  const submission = PublicKey.findProgramAddressSync(
+    [venue.toBuffer(), user.publicKey.toBuffer()],
+    program.programId
+  )[0];
+
+
   //airdrop
-  it("Airdrop", async () => {
+  xit("Airdrop", async () => {
     await anchor.getProvider().connection.requestAirdrop(admin.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL)
       .then(confirmTx);
   });
@@ -161,6 +175,32 @@ describe("anchor-loudness", () => {
       .then(log);
 
     console.log("\nFeed submitted!");
+    console.log("Your transaction signature", tx);
+  });
+
+  it("Create Submission", async () => {
+    const tx = await program.methods.createSubmission(
+      venueName,
+      {
+        soundLevel: 75,
+        timestamp: new anchor.BN(Math.floor(Date.now() / 1000)),
+        seatNumber: 101,
+        userRating: 5,
+      }
+    ).accountsPartial({
+        user: user.publicKey,
+        config,
+        userAccount,
+        venue,
+        submission,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([user])
+      .rpc()
+      .then(confirm)
+      .then(log);
+
+    console.log("\nUser creates submission!");
     console.log("Your transaction signature", tx);
   });
 

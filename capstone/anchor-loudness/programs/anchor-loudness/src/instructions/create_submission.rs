@@ -1,10 +1,10 @@
 use anchor_lang::prelude::*;
 
-use crate::state::{UserAccount, Venue, Submission, Config};
+use crate::state::{UserAccount, Venue, Submission, Config, SoundLevelData};
 
 #[derive(Accounts)]
 #[instruction(venue_name: String)]
-pub struct Initialize<'info> {
+pub struct CreateSubmission<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
     #[account(
@@ -14,11 +14,9 @@ pub struct Initialize<'info> {
     )]
     pub config: Account<'info, Config>,
     #[account(
-        init,
-        payer = user,
+        mut,
         seeds = [b"user".as_ref(), user.key().as_ref()],
         bump,
-        space = 8 + UserAccount::INIT_SPACE,
     )]
     pub user_account: Account<'info, UserAccount>,
     #[account(
@@ -40,9 +38,16 @@ pub struct Initialize<'info> {
     pub system_program: Program<'info, System>,
 }
 
-impl<'info> Initialize<'info> {
+impl<'info> CreateSubmission<'info> {
     
-    pub fn create_submission(&mut self) -> Result<()> {
+    pub fn create_submission(&mut self, 
+        sound_level_data: SoundLevelData,
+        bumps: &CreateSubmissionBumps) -> Result<()> {
+            self.submission.set_inner(Submission {
+                concert_goer: self.user.key(),
+                sound_level_data,
+                bump: bumps.submission,
+            });
       
         Ok(())
     }
