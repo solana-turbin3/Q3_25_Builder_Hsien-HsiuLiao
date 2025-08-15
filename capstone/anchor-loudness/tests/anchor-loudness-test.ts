@@ -1,7 +1,12 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { AnchorLoudness } from "../target/types/anchor_loudness";
-import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, getAssociatedTokenAddressSync } from "@solana/spl-token";
+import { 
+  ASSOCIATED_TOKEN_PROGRAM_ID, 
+  Account, 
+  TOKEN_PROGRAM_ID, 
+  getAssociatedTokenAddressSync,
+  getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
 import {
   Commitment,
   Keypair,
@@ -78,6 +83,9 @@ describe("anchor-loudness", () => {
     [Buffer.from("user"), user.publicKey.toBuffer()],
     program.programId
   )[0];
+
+ 
+
 
   const venueName = "Madison Sqaure Garden";
 
@@ -203,6 +211,54 @@ describe("anchor-loudness", () => {
     console.log("\nUser creates submission!");
     console.log("Your transaction signature", tx);
   });
+
+  it("Should be able to claim 1 token for 1 submission", async () => {
+
+   // let userRewardsAta: Account;
+    const userRewardsAta    = await getOrCreateAssociatedTokenAccount(
+      connection,
+      user,
+      rewardsMint,
+      user.publicKey,
+  
+    )
+    const tx = await program.methods.claim()
+      .accountsPartial({
+        user: user.publicKey,
+        config,
+        userAccount,
+        userRewardsAta: userRewardsAta.address,
+        rewardsMint,
+        systemProgram: SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .signers([user])
+      .rpc()
+      .then(confirm)
+      .then(log);
+
+    console.log("\nUser claims 1 token for 1 submission!");
+    console.log("Your transaction signature", tx);
+  });
+
+  it("Close Submission", async () => {
+    const tx = await program.methods.closeSubmission()
+      .accountsPartial({
+        user: user.publicKey,
+        config,
+        userAccount,
+        venue,
+        submission,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([user])
+      .rpc()
+      .then(confirm)
+      .then(log);
+
+    console.log("\nSubmission Closed!");
+    console.log("Your transaction signature", tx);
+  }); 
 
   it("Close User Account", async () => {
     const tx = await program.methods.closeUser()
