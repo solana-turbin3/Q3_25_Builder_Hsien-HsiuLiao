@@ -38,8 +38,10 @@ pub struct CloseSubmission<'info> {
 impl<'info> CloseSubmission<'info> {
     
     pub fn close_submission(&mut self) -> Result<()> {
-        self.user_account.num_of_submissions -= 1;
-
+        // Check if there are submissions to close
+            self.user_account.num_of_submissions = self.user_account.num_of_submissions.saturating_sub(1);
+        
+        
         Ok(())
     }
 } 
