@@ -36,17 +36,13 @@ pub mod anchor_loudness {
         ctx.accounts.create_submission(sound_level_data, &ctx.bumps)
     }
 
-
-    
-
-/*
     pub fn claim(ctx: Context<Claim>) -> Result<()> {
         ctx.accounts.claim()
-    } */
+    }
 
-   /*  pub fn close_submission(ctx: Context<CloseSubmission>) -> Result<()> {
+    pub fn close_submission(ctx: Context<CloseSubmission>, venue_name: String) -> Result<()> {
         ctx.accounts.close_submission()
-    } */
+    } 
 
     pub fn close_user(ctx: Context<CloseUser>) -> Result<()> {
         ctx.accounts.close_user(&ctx.bumps)
