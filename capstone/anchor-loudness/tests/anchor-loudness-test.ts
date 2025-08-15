@@ -14,7 +14,9 @@ import {
   PublicKey,
   SystemProgram,
   Transaction,
-  Connection
+  Connection,
+  clusterApiUrl,
+  type GetProgramAccountsConfig,
 } from "@solana/web3.js";
 import * as sb from "@switchboard-xyz/on-demand";
 import { assert } from "chai";
@@ -212,6 +214,32 @@ describe("anchor-loudness", () => {
     console.log("Your transaction signature", tx);
   });
 
+  it("A user should be able to get a list of submissions for a venue", async () => {
+    console.log("venue owner", (await connection.getAccountInfo(venue)).owner.toBase58());
+    const venueOwner = (await connection.getAccountInfo(venue)).owner;
+    let gpaConfig: GetProgramAccountsConfig = {
+      commitment: "confirmed",  // Instead of "finalized"
+      filters: [
+        {
+          dataSize: 52,
+        },
+      ],
+    };
+    
+    console.log("RPC config:", JSON.stringify(gpaConfig, null, 2));
+    console.log("Program ID:", program.programId.toBase58());
+
+    let filteredAccounts = await connection.getProgramAccounts(program.programId, gpaConfig);
+    console.log("Filtered accounts:", filteredAccounts);
+    console.log("Filtered accounts length:", filteredAccounts.length);
+
+    // Then later for the debug
+    let allAccounts = await connection.getProgramAccounts(program.programId);
+    let submissionAccounts = allAccounts.filter(acc => acc.account.data.length === 52);
+    console.log("Submission accounts found:", submissionAccounts.length);
+    assert.equal(submissionAccounts.length, 1);
+  });
+
   it("Should be able to claim 1 token for 1 submission", async () => {
 
    // let userRewardsAta: Account;
@@ -237,8 +265,21 @@ describe("anchor-loudness", () => {
       .then(confirm)
       .then(log);
 
-    console.log("\nUser claims 1 token for 1 submission!");
+    console.log("\nUser claimed 1 token for 1 submission!");
     console.log("Your transaction signature", tx);
+  });
+
+  it("A user should be able to see their token balance", async () => {
+    const userRewardsAta    = await getOrCreateAssociatedTokenAccount(
+      connection,
+      user,
+      rewardsMint,
+      user.publicKey,
+  
+    )
+
+    const balance = await connection.getTokenAccountBalance(userRewardsAta.address);
+    console.log("token balance", balance.value.amount);
   });
 
   it("Close Submission", async () => {
