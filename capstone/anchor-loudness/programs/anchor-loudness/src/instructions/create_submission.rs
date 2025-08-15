@@ -49,6 +49,8 @@ impl<'info> CreateSubmission<'info> {
                 bump: bumps.submission,
             });
       
+      //user get 1 point for submitting a submission
+      self.user_account.num_of_submissions += 1;
         Ok(())
     }
 } 
