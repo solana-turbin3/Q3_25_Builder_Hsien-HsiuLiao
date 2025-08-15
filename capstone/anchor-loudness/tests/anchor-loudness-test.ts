@@ -242,7 +242,7 @@ describe("anchor-loudness", () => {
   });
 
   it("Close Submission", async () => {
-    const tx = await program.methods.closeSubmission()
+    const tx = await program.methods.closeSubmission(venueName)
       .accountsPartial({
         user: user.publicKey,
         config,
