@@ -6,9 +6,7 @@ pub enum Error {
     NotAdmin,
     #[msg("Not enough lamports")]
     NotEnoughLamports,
-    #[msg("Not enough tokens")]
-    NotEnoughTokens,
-    #[msg("Not enough rewards")]
-    NotEnoughRewards,
+    #[msg("No points to claim")]
+    NoPointsToClaim,
     
 }
