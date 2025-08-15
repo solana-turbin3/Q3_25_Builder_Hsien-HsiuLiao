@@ -1,0 +1,29 @@
+https://github.com/SendArcade/solana-app-kit
+
+$ npx start-solana-app
+Need to install the following packages:
+start-solana-app@1.0.9
+Ok to proceed? (y) y
+
+
+🚀 Welcome to the Solana App Kit Generator 🚀
+
+✔ What is the name of your project? … mobile-appkit-loudness
+✔ Downloaded Solana App Kit successfully
+✔ Project customized successfully
+✔ Dependencies installed successfully
+
+Solana app created successfully! 🎉
+
+Next steps:
+  cd mobile-appkit-loudness
+
+Building and running your app:
+  npx expo run:ios (to build and install on iOS simulator)
+  npx expo run:android (to build and install on Android - make sure Android Studio simulator is running first)
+
+After installation:
+  pnpm start --clear --dev (quick dev mode for experimentation without setting up all environment variables)
+  pnpm start --clear (fast development with hot reloading - uses your existing build so no reinstallation needed)
+
+Happy coding! 🚀
