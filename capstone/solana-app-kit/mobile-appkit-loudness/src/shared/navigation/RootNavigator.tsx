@@ -27,6 +27,7 @@ import { TokenInfo } from '@/modules/data-module';
 
 import WalletScreen from '@/modules/moonpay/screens/WalletScreen';
 import { DeleteAccountConfirmationScreen, IntroScreen, LoginScreen, WebViewScreen } from '@/screens';
+import LoudnessAppScreen from '@/screens/LoudnessAppScreen';
 
 export type RootStackParamList = {
   IntroScreen: undefined;
@@ -58,6 +59,7 @@ export type RootStackParamList = {
   };
   OnrampScreen: undefined;
   WebViewScreen: { uri: string; title: string };
+  Loudness: undefined;
   DeleteAccountConfirmationScreen: undefined;
   SwapScreen: {
     inputToken?: Partial<TokenInfo>;
@@ -171,6 +173,7 @@ export default function RootNavigator() {
           <Stack.Screen name="WalletScreen" component={WalletScreen} />
           <Stack.Screen name="OnrampScreen" component={OnrampScreen} />
           <Stack.Screen name="WebViewScreen" component={WebViewScreen} />
+          <Stack.Screen name="Loudness" component={LoudnessAppScreen} />
           <Stack.Screen name="DeleteAccountConfirmationScreen" component={DeleteAccountConfirmationScreen} />
           <Stack.Screen name="SwapScreen" component={SwapScreen} />
         </>
@@ -180,6 +183,7 @@ export default function RootNavigator() {
         <>
           <Stack.Screen name="IntroScreen" component={IntroScreen} />
           <Stack.Screen name="LoginOptions" component={LoginScreen} />
+          <Stack.Screen name="Loudness" component={LoudnessAppScreen} />
           {/* Still include MainTabs for navigation from IntroScreen if user is found to be logged in */}
           <Stack.Screen name="MainTabs" component={MainTabs} />
         </>

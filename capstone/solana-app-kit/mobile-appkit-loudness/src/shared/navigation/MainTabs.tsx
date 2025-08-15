@@ -15,6 +15,7 @@ import SwapScreen from '@/modules/swap/screens/SwapScreen';
 
 import { ChatListScreen } from '@/screens/sample-ui/chat';
 import ModuleScreen from '@/screens/Common/launch-modules-screen/LaunchModules';
+import LoudnessAppScreen from '@/screens/LoudnessAppScreen';
 
 // Create context for scroll-based UI hiding
 interface ScrollUIContextType {
@@ -42,8 +43,8 @@ const platformIcons = {
 const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get('window');
 
-// Calculate tab positions based on 4-tab layout - adjusted for accuracy
-const TAB_WIDTH = width / 4;
+// Calculate tab positions based on 5-tab layout - adjusted for accuracy
+const TAB_WIDTH = width / 5;
 const FEED_TAB_CENTER = TAB_WIDTH * 1.5; // Second tab center (0-based index)
 
 const iconStyle = {
@@ -352,6 +353,31 @@ export default function MainTabs() {
                 }
                 iconSelected={
                   Icons.RocketIconSelected as React.ComponentType<{
+                    width: number;
+                    height: number;
+                  }>
+                }
+                style={iconStyle}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Loudness"
+          component={LoudnessAppScreen}
+          options={{
+            tabBarIcon: ({ focused, size }) => (
+              <AnimatedTabIcon
+                focused={focused}
+                size={size * 1.1}
+                icon={
+                  Icons.SwapNavIcon as React.ComponentType<{
+                    width: number;
+                    height: number;
+                  }>
+                }
+                iconSelected={
+                  Icons.SwapNavIconSelected as React.ComponentType<{
                     width: number;
                     height: number;
                   }>

@@ -923,9 +923,22 @@ export default function LoginScreen() {
         <View style={styles.headerContainer}>
           <Text style={styles.welcomeText}>Welcome back</Text>
           <Text style={styles.subtitleText}>Sign in to your account</Text>
+          
         </View>
 
         {renderAuthComponent()}
+        
+        {/* Loudness App Button */}
+        <View style={styles.loudnessButtonContainer}>
+          <TouchableOpacity
+            style={styles.loudnessButton}
+            onPress={() => navigation.navigate('Loudness' as any)}
+          >
+            <Text style={styles.loudnessButtonText}>🎵 Loudness App</Text>
+            <Text style={styles.loudnessButtonSubtext}>Submit Sound Data</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* <View
           style={{
             position: 'absolute',

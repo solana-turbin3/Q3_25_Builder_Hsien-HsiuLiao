@@ -155,6 +155,39 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
+  loudnessButtonContainer: {
+    marginTop: 30,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  loudnessButton: {
+    backgroundColor: COLORS.brandPrimary,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 200,
+    shadowColor: COLORS.brandPrimary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  loudnessButtonText: {
+    fontFamily: TYPOGRAPHY.fontFamily,
+    fontSize: TYPOGRAPHY.size.lg,
+    fontWeight: '700',
+    color: COLORS.white,
+    marginBottom: 4,
+  },
+  loudnessButtonSubtext: {
+    fontFamily: TYPOGRAPHY.fontFamily,
+    fontSize: TYPOGRAPHY.size.sm,
+    fontWeight: '400',
+    color: COLORS.white,
+    opacity: 0.9,
+  },
 });
 
 export default styles;
