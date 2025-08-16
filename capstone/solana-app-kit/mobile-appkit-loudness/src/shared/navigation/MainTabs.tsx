@@ -15,7 +15,7 @@ import SwapScreen from '@/modules/swap/screens/SwapScreen';
 
 import { ChatListScreen } from '@/screens/sample-ui/chat';
 import ModuleScreen from '@/screens/Common/launch-modules-screen/LaunchModules';
-import LoudnessAppScreen from '@/screens/LoudnessAppScreen';
+import { LoudnessAppScreen } from '@/screens';
 
 // Create context for scroll-based UI hiding
 interface ScrollUIContextType {

@@ -27,7 +27,7 @@ import { TokenInfo } from '@/modules/data-module';
 
 import WalletScreen from '@/modules/moonpay/screens/WalletScreen';
 import { DeleteAccountConfirmationScreen, IntroScreen, LoginScreen, WebViewScreen } from '@/screens';
-import LoudnessAppScreen from '@/screens/LoudnessAppScreen';
+import { LoudnessAppScreen } from '@/screens';
 
 export type RootStackParamList = {
   IntroScreen: undefined;

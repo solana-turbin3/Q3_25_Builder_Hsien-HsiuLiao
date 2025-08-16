@@ -15,6 +15,7 @@ import { Audio } from 'expo-av';
 import { computeAmplitude, load } from 'react-native-audio-analyzer';
 import COLORS from '@/assets/colors';
 import TYPOGRAPHY from '@/assets/typography';
+import { styles } from './LoudnessAppScreen.styles';
 
 interface FormData {
   venueName: string;
@@ -399,6 +400,22 @@ export default function LoudnessAppScreen() {
     <View style={styles.micContainer}>
       <Text style={styles.micLabel}>Measure Sound Level</Text>
       
+      {/* Test button to verify TouchableOpacity works */}
+      <TouchableOpacity
+        style={{
+          backgroundColor: COLORS.brandGreen,
+          padding: 10,
+          borderRadius: 8,
+          marginBottom: 10
+        }}
+        onPress={() => {
+          console.log('=== TEST BUTTON PRESSED ===');
+          Alert.alert('Test', 'Button is working!');
+        }}
+      >
+        <Text style={{ color: COLORS.white, textAlign: 'center' }}>🧪 Test Button</Text>
+      </TouchableOpacity>
+      
       <TouchableOpacity
         style={[
           styles.micButton,
@@ -406,7 +423,11 @@ export default function LoudnessAppScreen() {
         ]}
         onPress={() => {
           console.log('=== BUTTON PRESSED ==='); // Debug log
+          console.log('Button pressed at:', new Date().toISOString()); // Immediate timestamp
           console.log('isRecording state:', isRecording); // Debug log
+          console.log('hasPermission:', hasPermission); // Check permission status
+          console.log('recording object exists:', !!recording); // Check recording object
+          
           if (isRecording) {
             console.log('Calling stopRecording...'); // Debug log
             stopRecording();
@@ -510,7 +531,7 @@ export default function LoudnessAppScreen() {
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
-          <Text style={styles.title}>🎵 Loudness App</Text>
+          <Text style={styles.title}>🎵 new Loudness App</Text>
           <Text style={styles.subtitle}>
             Submit sound level data to the blockchain
           </Text>
@@ -600,286 +621,4 @@ export default function LoudnessAppScreen() {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    padding: 20,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 30,
-    marginTop: 20,
-  },
-  title: {
-    fontSize: TYPOGRAPHY.size.xxxl,
-    fontWeight: TYPOGRAPHY.weights.bold,
-    color: COLORS.white,
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: TYPOGRAPHY.size.md,
-    fontWeight: TYPOGRAPHY.weights.regular,
-    color: COLORS.textLight,
-    textAlign: 'center',
-  },
-  micContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
-    padding: 20,
-    backgroundColor: COLORS.lighterBackground,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: COLORS.borderDarkColor,
-  },
-  micLabel: {
-    fontSize: TYPOGRAPHY.size.lg,
-    fontWeight: TYPOGRAPHY.weights.semiBold,
-    color: COLORS.white,
-    marginBottom: 20,
-  },
-  micButton: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: COLORS.brandPrimary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: COLORS.brandPrimary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  micButtonRecording: {
-    backgroundColor: COLORS.errorRed,
-  },
-  micButtonInner: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  micIcon: {
-    fontSize: 32,
-  },
-  recordingStatus: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  recordingDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: COLORS.errorRed,
-    marginRight: 8,
-  },
-  recordingText: {
-    color: COLORS.errorRed,
-    fontSize: TYPOGRAPHY.size.sm,
-    fontWeight: TYPOGRAPHY.weights.medium,
-  },
-  dbDisplay: {
-    alignItems: 'center',
-    marginTop: 20,
-    padding: 16,
-    backgroundColor: COLORS.darkerBackground,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.borderDarkColor,
-  },
-  dbLabel: {
-    fontSize: TYPOGRAPHY.size.md,
-    fontWeight: TYPOGRAPHY.weights.medium,
-    color: COLORS.textLight,
-    marginBottom: 8,
-  },
-  dbValueContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    marginBottom: 8,
-  },
-  dbValue: {
-    fontSize: TYPOGRAPHY.size.xxxl,
-    fontWeight: TYPOGRAPHY.weights.bold,
-    color: COLORS.brandPrimary,
-  },
-  dbUnit: {
-    fontSize: TYPOGRAPHY.size.lg,
-    fontWeight: TYPOGRAPHY.weights.medium,
-    color: COLORS.textLight,
-    marginLeft: 8,
-  },
-  dbStatus: {
-    fontSize: TYPOGRAPHY.size.sm,
-    fontWeight: TYPOGRAPHY.weights.medium,
-    color: COLORS.textLight,
-    marginTop: 4,
-    textAlign: 'center',
-  },
-  liveIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  liveDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: COLORS.brandGreen,
-    marginRight: 6,
-  },
-  liveText: {
-    fontSize: TYPOGRAPHY.size.xs,
-    fontWeight: TYPOGRAPHY.weights.bold,
-    color: COLORS.brandGreen,
-    letterSpacing: 1,
-  },
-  formContainer: {
-    backgroundColor: COLORS.lighterBackground,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: COLORS.borderDarkColor,
-  },
-  inputGroup: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: TYPOGRAPHY.size.lg,
-    fontWeight: TYPOGRAPHY.weights.semiBold,
-    color: COLORS.white,
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: COLORS.darkerBackground,
-    borderRadius: 12,
-    padding: 16,
-    fontSize: 16,
-    color: COLORS.white,
-    borderWidth: 1,
-    borderColor: COLORS.borderDarkColor,
-  },
-  textArea: {
-    height: 100,
-    paddingTop: 16,
-  },
-  timestampContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  timestampInput: {
-    flex: 1,
-    marginRight: 12,
-  },
-  timestampButton: {
-    backgroundColor: COLORS.brandPrimary,
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  timestampButtonText: {
-    color: COLORS.white,
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  submitButton: {
-    backgroundColor: COLORS.brandPrimary,
-    borderRadius: 12,
-    padding: 18,
-    alignItems: 'center',
-    marginTop: 10,
-    shadowColor: COLORS.brandPrimary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  submitButtonText: {
-    color: COLORS.white,
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  infoContainer: {
-    backgroundColor: COLORS.lighterBackground,
-    borderRadius: 16,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: COLORS.borderDarkColor,
-  },
-  infoTitle: {
-    fontSize: TYPOGRAPHY.size.xl,
-    fontWeight: TYPOGRAPHY.weights.semiBold,
-    color: COLORS.white,
-    marginBottom: 12,
-  },
-  infoText: {
-    fontSize: TYPOGRAPHY.size.md,
-    fontWeight: TYPOGRAPHY.weights.regular,
-    color: COLORS.textLight,
-    lineHeight: 22,
-  },
-  audioLevelBar: {
-    width: '100%',
-    height: 20,
-    backgroundColor: COLORS.darkerBackground,
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginTop: 10,
-    paddingHorizontal: 5,
-    borderWidth: 1,
-    borderColor: COLORS.borderDarkColor,
-  },
-  audioLevelBarBackground: {
-    flex: 1,
-    backgroundColor: COLORS.borderDarkColor,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  audioLevelBarFill: {
-    height: '100%',
-    borderRadius: 10,
-  },
-  audioLevelText: {
-    fontSize: TYPOGRAPHY.size.sm,
-    fontWeight: TYPOGRAPHY.weights.medium,
-    color: COLORS.textLight,
-    textAlign: 'center',
-    marginTop: 5,
-  },
-  recordingIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: COLORS.darkerBackground,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.borderDarkColor,
-  },
-  recordingPulse: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: COLORS.brandPrimary,
-    marginRight: 10,
-  },
-  recordingIndicatorText: {
-    fontSize: TYPOGRAPHY.size.sm,
-    fontWeight: TYPOGRAPHY.weights.medium,
-    color: COLORS.textLight,
-  },
-  recordingCounterText: {
-    fontSize: TYPOGRAPHY.size.sm,
-    fontWeight: TYPOGRAPHY.weights.medium,
-    color: COLORS.textLight,
-    marginLeft: 10,
-  },
-}); 
+} 
