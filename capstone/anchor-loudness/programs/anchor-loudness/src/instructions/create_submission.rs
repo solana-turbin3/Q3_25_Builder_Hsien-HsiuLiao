@@ -44,6 +44,7 @@ impl<'info> CreateSubmission<'info> {
         sound_level_data: SoundLevelData,
         bumps: &CreateSubmissionBumps) -> Result<()> {
             self.submission.set_inner(Submission {
+                venue: self.venue.key(),
                 concert_goer: self.user.key(),
                 sound_level_data,
                 bump: bumps.submission,
