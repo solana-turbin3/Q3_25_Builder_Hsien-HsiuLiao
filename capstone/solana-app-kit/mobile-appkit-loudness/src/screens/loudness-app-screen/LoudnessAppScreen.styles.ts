@@ -375,4 +375,235 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 5,
   },
+  // Wallet connection styles
+  walletConnectedContainer: {
+    backgroundColor: COLORS.lighterBackground,
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 16,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: COLORS.brandGreen,
+  },
+  walletStatusConnected: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  walletProviderText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    fontWeight: TYPOGRAPHY.weights.medium,
+  },
+  walletAddressText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    fontFamily: 'monospace',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  disconnectButton: {
+    backgroundColor: COLORS.errorRed,
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    alignSelf: 'center',
+  },
+  disconnectButtonText: {
+    color: COLORS.white,
+    fontSize: TYPOGRAPHY.size.sm,
+    fontWeight: TYPOGRAPHY.weights.medium,
+    textAlign: 'center',
+  },
+  walletDisconnectedContainer: {
+    backgroundColor: COLORS.lighterBackground,
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 16,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: COLORS.borderDarkColor,
+  },
+  walletStatusDisconnected: {
+    marginBottom: 16,
+  },
+  walletSubtext: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    marginTop: 4,
+  },
+  connectionOptionsContainer: {
+    gap: 12,
+  },
+  connectButton: {
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 48,
+  },
+  googleButton: {
+    backgroundColor: '#4285F4',
+  },
+  appleButton: {
+    backgroundColor: '#000000',
+  },
+  emailButton: {
+    backgroundColor: COLORS.brandPrimary,
+  },
+  dynamicButton: {
+    backgroundColor: '#6366F1',
+  },
+  turnkeyButton: {
+    backgroundColor: '#10B981',
+  },
+  mwaButton: {
+    backgroundColor: '#8B5CF6', // Purple color for MWA
+  },
+  connectButtonText: {
+    color: COLORS.white,
+    fontSize: TYPOGRAPHY.size.md,
+    fontWeight: TYPOGRAPHY.weights.semiBold,
+  },
+  mwaInfoText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    marginTop: 8,
+    lineHeight: 18,
+  },
+  noProviderText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
+  connectingIndicator: {
+    marginTop: 16,
+    alignItems: 'center',
+  },
+  connectingText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    fontStyle: 'italic',
+  },
+  connectWalletPrompt: {
+    backgroundColor: COLORS.lighterBackground,
+    borderRadius: 12,
+    padding: 24,
+    marginTop: 24,
+    marginBottom: 16,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.borderDarkColor,
+  },
+  connectWalletPromptText: {
+    fontSize: TYPOGRAPHY.size.lg,
+    color: COLORS.textDarkColor,
+    fontWeight: TYPOGRAPHY.weights.semiBold,
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  connectWalletPromptSubtext: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  walletStatus: {
+    backgroundColor: COLORS.lighterBackground,
+    borderRadius: 8,
+    padding: 8,
+    marginTop: 8,
+    alignSelf: 'center',
+  },
+  walletStatusText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    fontWeight: TYPOGRAPHY.weights.medium,
+  },
+  
+  // Wallet balance styles
+  walletBalanceContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+    padding: 16,
+    marginTop: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: COLORS.borderDarkColor,
+  },
+  balanceHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  balanceTitle: {
+    fontSize: TYPOGRAPHY.size.md,
+    color: COLORS.textDarkColor,
+    fontWeight: TYPOGRAPHY.weights.semiBold,
+  },
+  refreshButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: COLORS.brandPrimary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  refreshButtonText: {
+    fontSize: 16,
+    color: COLORS.white,
+  },
+  balanceDetails: {
+    gap: 12,
+  },
+  balanceRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 4,
+  },
+  balanceLabel: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    fontWeight: TYPOGRAPHY.weights.medium,
+  },
+  balanceValue: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textDarkColor,
+    fontWeight: TYPOGRAPHY.weights.semiBold,
+    fontFamily: 'monospace',
+  },
+  balanceValueContainer: {
+    minWidth: 80,
+    alignItems: 'flex-end',
+  },
+  balanceLoading: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    fontStyle: 'italic',
+  },
+  balanceError: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.errorRed,
+    fontStyle: 'italic',
+  },
+  networkInfo: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.borderDarkColor,
+    alignItems: 'center',
+  },
+  networkText: {
+    fontSize: TYPOGRAPHY.size.xs,
+    color: COLORS.textLight,
+    fontStyle: 'italic',
+  },
 }); 
