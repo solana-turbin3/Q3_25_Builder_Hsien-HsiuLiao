@@ -8,5 +8,6 @@ pub enum Error {
     NotEnoughLamports,
     #[msg("No points to claim")]
     NoPointsToClaim,
-    
+    #[msg("No submissions to close")]
+    NoSubmissionsToClose,
 }
