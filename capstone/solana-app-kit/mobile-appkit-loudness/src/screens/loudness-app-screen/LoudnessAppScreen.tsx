@@ -13,23 +13,26 @@ import {
 } from 'react-native';
 import { Audio } from 'expo-av';
 import { computeAmplitude, load } from 'react-native-audio-analyzer';
+import { useSolanaSubmission } from '@/services/solanaSubmission';
 import COLORS from '@/assets/colors';
 import TYPOGRAPHY from '@/assets/typography';
 import { styles } from './LoudnessAppScreen.styles';
 
 interface FormData {
   venueName: string;
-  decibelLevel: string;
+  soundLevel: number;
+  seatNumber: number;
+  userRating: number;
   timestamp: string;
-  notes: string;
 }
 
 export default function LoudnessAppScreen() {
   const [formData, setFormData] = useState<FormData>({
     venueName: '',
-    decibelLevel: '--',
+    soundLevel: 0,
+    seatNumber: 1,
+    userRating: 5,
     timestamp: '',
-    notes: '',
   });
 
   // Microphone state
@@ -42,6 +45,12 @@ export default function LoudnessAppScreen() {
   // Audio analyzer state
   const [audioAnalyzer, setAudioAnalyzer] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  
+  // Submission state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Solana submission hook
+  const { submitLoudnessEntry, isInitialized } = useSolanaSubmission();
   
   // Use ref to track recording state for immediate access
   const isRecordingRef = useRef(false);
@@ -86,7 +95,7 @@ export default function LoudnessAppScreen() {
     }
   }, [isRecording, pulseAnim]);
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const handleInputChange = (field: keyof FormData, value: string | number) => {
     setFormData(prev => ({
       ...prev,
       [field]: value,
@@ -189,7 +198,7 @@ export default function LoudnessAppScreen() {
             setCurrentDb(Math.round(calculatedDb));
             
             // Update the form with the real decibel reading
-            handleInputChange('decibelLevel', Math.round(calculatedDb).toString());
+            handleInputChange('soundLevel', Math.round(calculatedDb));
             
             console.log('Recording completed - Duration:', duration, 'ms, Real dB:', calculatedDb);
           }
@@ -197,7 +206,7 @@ export default function LoudnessAppScreen() {
           console.log('Error analyzing final recording:', analysisError);
           // Fallback to a default value if analysis fails
           setCurrentDb(45);
-          handleInputChange('decibelLevel', '45');
+          handleInputChange('soundLevel', 45);
         }
         
         await recording.stopAndUnloadAsync();
@@ -360,34 +369,64 @@ export default function LoudnessAppScreen() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validate form
     if (!formData.venueName.trim()) {
       Alert.alert('Validation Error', 'Please fill in venue name');
       return;
     }
 
-    // Here you would typically submit to your Solana program
-    console.log('Form submitted:', formData);
-    Alert.alert(
-      'Success!',
-      'Your loudness data has been submitted to the blockchain!',
-      [
-        {
-          text: 'OK',
-          onPress: () => {
-            // Reset form
-            setFormData({
-              venueName: '',
-              decibelLevel: '--',
-              timestamp: '',
-              notes: '',
-            });
-            setCurrentDb(null);
+    if (!formData.soundLevel || formData.soundLevel === 0) {
+      Alert.alert('Validation Error', 'Please measure sound level using the microphone');
+      return;
+    }
+
+    if (!isInitialized) {
+      Alert.alert('Error', 'Solana service not ready. Please wait a moment and try again.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Submit to Solana blockchain using the real service
+      const result = await submitLoudnessEntry({
+        venueName: formData.venueName.trim(),
+        soundLevel: formData.soundLevel,
+        seatNumber: formData.seatNumber,
+        userRating: formData.userRating,
+        timestamp: formData.timestamp || new Date().toISOString(),
+      });
+      
+      console.log('Blockchain submission successful:', result);
+      Alert.alert(
+        'Success!',
+        `Your loudness data has been submitted to the Solana blockchain!\n\nTransaction: ${result.signature}\nSubmission Address: ${result.submissionAddress}`,
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              // Reset form
+              setFormData({
+                venueName: '',
+                soundLevel: 0,
+                seatNumber: 1,
+                userRating: 5,
+                timestamp: '',
+              });
+              setCurrentDb(null);
+            },
           },
-        },
-      ]
-    );
+        ]
+      );
+    } catch (error) {
+      console.error('Failed to submit loudness data to blockchain:', error);
+      Alert.alert(
+        'Blockchain Error', 
+        'Failed to submit data to Solana blockchain. Please check your wallet connection and try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const setCurrentTimestamp = () => {
@@ -400,21 +439,7 @@ export default function LoudnessAppScreen() {
     <View style={styles.micContainer}>
       <Text style={styles.micLabel}>Measure Sound Level</Text>
       
-      {/* Test button to verify TouchableOpacity works */}
-      <TouchableOpacity
-        style={{
-          backgroundColor: COLORS.brandGreen,
-          padding: 10,
-          borderRadius: 8,
-          marginBottom: 10
-        }}
-        onPress={() => {
-          console.log('=== TEST BUTTON PRESSED ===');
-          Alert.alert('Test', 'Button is working!');
-        }}
-      >
-        <Text style={{ color: COLORS.white, textAlign: 'center' }}>🧪 Test Button</Text>
-      </TouchableOpacity>
+      
       
       <TouchableOpacity
         style={[
@@ -531,10 +556,24 @@ export default function LoudnessAppScreen() {
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
-          <Text style={styles.title}>🎵 new Loudness App</Text>
+          <Text style={styles.title}>🎵 Loudness App</Text>
           <Text style={styles.subtitle}>
-            Submit sound level data to the blockchain
+            Submit sound level data to the Solana blockchain
           </Text>
+          {!isInitialized && (
+            <View style={styles.walletStatus}>
+              <Text style={styles.walletStatusText}>
+                🔗 Connecting to Solana...
+              </Text>
+            </View>
+          )}
+          {isInitialized && (
+            <View style={styles.walletStatus}>
+              <Text style={styles.walletStatusText}>
+                ✅ Connected to Solana
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* Microphone Section */}
@@ -553,10 +592,10 @@ export default function LoudnessAppScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Decibel Level *</Text>
+            <Text style={styles.label}>Sound Level *</Text>
             <TextInput
               style={styles.input}
-              value={formData.decibelLevel}
+              value={formData.soundLevel.toString()}
               editable={false}
               placeholder="Use microphone to measure"
               placeholderTextColor={COLORS.textLight}
@@ -584,22 +623,52 @@ export default function LoudnessAppScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Additional Notes</Text>
+            <Text style={styles.label}>Seat Number *</Text>
             <TextInput
-              style={[styles.input, styles.textArea]}
-              value={formData.notes}
-              onChangeText={(value) => handleInputChange('notes', value)}
-              placeholder="Any additional notes about the venue or event"
+              style={styles.input}
+              value={formData.seatNumber.toString()}
+              onChangeText={(value) => handleInputChange('seatNumber', parseInt(value) || 1)}
+              placeholder="Enter seat number"
               placeholderTextColor={COLORS.textLight}
-              multiline
-              numberOfLines={4}
-              textAlignVertical="top"
+              keyboardType="numeric"
             />
           </View>
 
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Submit to Blockchain</Text>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>User Rating *</Text>
+            <View style={styles.ratingContainer}>
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <TouchableOpacity
+                  key={rating}
+                  style={[
+                    styles.ratingButton,
+                    formData.userRating === rating && styles.ratingButtonActive
+                  ]}
+                  onPress={() => handleInputChange('userRating', rating)}
+                >
+                  <Text style={styles.ratingText}>⭐</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          <TouchableOpacity 
+            style={styles.submitButton} 
+            onPress={handleSubmit} 
+            disabled={isSubmitting || !isInitialized}
+          >
+            <Text style={styles.submitButtonText}>
+              {!isInitialized ? 'Initializing...' : 
+               isSubmitting ? 'Submitting to Blockchain...' : 
+               'Submit to Blockchain'}
+            </Text>
           </TouchableOpacity>
+          
+          {!isInitialized && (
+            <Text style={styles.initializingText}>
+              Connecting to Solana blockchain...
+            </Text>
+          )}
         </View>
 
         <View style={styles.infoContainer}>
@@ -608,14 +677,10 @@ export default function LoudnessAppScreen() {
             • Use the microphone button to measure real-time sound levels{'\n'}
             • Real audio analysis using logarithmic decibel conversion{'\n'}
             • Live metering values provide immediate feedback{'\n'}
-            • Fill out venue details and submit to the Solana blockchain{'\n'}
-            • Your submission will be recorded as an NFT{'\n'}
-            • Earn rewards for contributing to the DePIN network
-          </Text>
-          
-          <Text style={[styles.infoText, { marginTop: 16, fontSize: TYPOGRAPHY.size.sm, color: COLORS.textLight }]}>
-            📊 <Text style={{ fontWeight: TYPOGRAPHY.weights.semiBold }}>Accuracy Note:</Text>{'\n'}
-            Decibel measurements are calculated from real microphone metering data using logarithmic conversion algorithms. While not laboratory-grade, they provide accurate relative measurements for your DePIN network contributions.
+            • Fill out venue details, seat number, and rating{'\n'}
+            • Submit to the Solana blockchain for on-chain storage{'\n'}
+            • Earn rewards for contributing to the DePIN network{'\n'}
+            • All data is permanently stored on the Solana blockchain
           </Text>
         </View>
       </ScrollView>
