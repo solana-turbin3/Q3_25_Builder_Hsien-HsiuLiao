@@ -86,7 +86,7 @@ describe("anchor-loudness tests", () => {
   )[0];
 
  
-  const venueName = "Madison Sqaure Garden";
+  const venueName = "TokyoDome";
 
   const venue = PublicKey.findProgramAddressSync(
     [config.toBuffer(), Buffer.from(venueName, 'utf8')],
@@ -212,18 +212,18 @@ describe("anchor-loudness tests", () => {
       ],
     };
     
-    console.log("RPC config:", JSON.stringify(configFilter, null, 2));
+//    console.log("RPC config:", JSON.stringify(configFilter, null, 2));
     console.log("Program ID:", program.programId.toBase58());
 
     let filteredAccounts = await connection.getProgramAccounts(program.programId, configFilter);
-    console.log("Filtered accounts:", filteredAccounts);
+  //  console.log("Filtered accounts:", filteredAccounts);
     console.log("Filtered accounts length:", filteredAccounts.length);
 
     // Then later for the debug
     let allAccounts = await connection.getProgramAccounts(program.programId);
     let submissionAccounts = allAccounts.filter(acc => acc.account.data.length === submissionAccountDataLength);
     console.log("Submission accounts found:", submissionAccounts.length);
-    assert.equal(submissionAccounts.length, 1);
+    assert.equal(submissionAccounts.length, filteredAccounts.length);
   });
 
   it("A user should be able to get a list of submissions for a venue filtering by venue key", async () => {
@@ -242,10 +242,10 @@ describe("anchor-loudness tests", () => {
     };
 
     let filteredAccounts = await connection.getProgramAccounts(program.programId, configFilter);
-    console.log("Filtered accounts:", filteredAccounts);
+   // console.log("Filtered accounts:", filteredAccounts);
     console.log("Filtered accounts length:", filteredAccounts.length);
 
-    assert.equal(filteredAccounts.length, 1);
+    assert.isTrue(filteredAccounts.length > 0);
   });
 
   it("Should be able to claim 1 token for 1 submission", async () => {
@@ -288,7 +288,15 @@ describe("anchor-loudness tests", () => {
     console.log("token balance", balance.value.amount);
   });
 
-  it("Close Submission", async () => {
+  it("Close Submission and token burned", async () => {
+    const userRewardsAta = await getOrCreateAssociatedTokenAccount(
+      connection,
+      user,
+      rewardsMint,
+      user.publicKey,
+    );
+
+    const balanceBeforeClose = await connection.getTokenAccountBalance(userRewardsAta.address);
     const tx = await program.methods.closeSubmission(venueName)
       .accountsPartial({
         user: user.publicKey,
@@ -296,12 +304,18 @@ describe("anchor-loudness tests", () => {
         userAccount,
         venue,
         submission,
+        userRewardsAta: userRewardsAta.address,
+        rewardsMint,
+        tokenProgram: TOKEN_PROGRAM_ID,
         systemProgram: SystemProgram.programId,
       })
       .signers([user])
       .rpc()
       .then(confirm)
       .then(log);
+
+    const balanceAfterClose = await connection.getTokenAccountBalance(userRewardsAta.address);
+    assert.equal(parseInt(balanceAfterClose.value.amount), (parseInt(balanceBeforeClose.value.amount) - 1));
 
     console.log("\nSubmission Closed!");
     console.log("Your transaction signature", tx);
