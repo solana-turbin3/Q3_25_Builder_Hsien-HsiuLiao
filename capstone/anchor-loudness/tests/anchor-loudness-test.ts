@@ -24,13 +24,12 @@ import { assert } from "chai";
 import wallet from "../../Turbin3-wallet.json";
 import { publicKey } from "@coral-xyz/anchor/dist/cjs/utils";
 
-describe("anchor-loudness", () => {
+describe("anchor-loudness tests", () => {
   // Configure the client to use the local cluster.
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const connection = provider.connection;
-
 
   const program = anchor.workspace.anchorLoudness as Program<AnchorLoudness>;
 
@@ -87,8 +86,6 @@ describe("anchor-loudness", () => {
   )[0];
 
  
-
-
   const venueName = "Madison Sqaure Garden";
 
   const venue = PublicKey.findProgramAddressSync(
@@ -104,7 +101,7 @@ describe("anchor-loudness", () => {
 
   //airdrop
   xit("Airdrop", async () => {
-    await anchor.getProvider().connection.requestAirdrop(admin.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL)
+    await anchor.getProvider().connection.requestAirdrop(admin.publicKey, 2 * LAMPORTS_PER_SOL)
       .then(confirmTx);
   });
 
@@ -122,7 +119,7 @@ describe("anchor-loudness", () => {
       .then(confirm)
       .then(log);
 
-    console.log("\nConfig Account Initialized!");
+    console.log("\nConfig Account Initialized for Loudness program!");
     console.log("Your transaction signature", tx);
   });
 
@@ -150,29 +147,10 @@ describe("anchor-loudness", () => {
     console.log("Your transaction signature", tx);
   });
 
-  it("Get sound level", async () => {
+  it("Call program with feed to read value", async () => {
     const loudnessProgram = anchor.workspace.anchorLoudness as Program<AnchorLoudness>;
 
     const feed = new PublicKey("6JgUWRNpHJFYP3qCzHzzjCTnMCrZ9hb1RLGUuZrMt8eB");
-
-   // const { keypair, connection, program } = await sb.AnchorUtils.loadEnv();
-
-   // const feedAccountInfo = await connection.getAccountInfo(feed);
-   // console.log("feedAccountInfo", feedAccountInfo.data.toString());
-    
-
-   // const sbProgram = program;
-
-    //const feedAccount = new sb.PullFeed(sbProgram!, feed);
-
-    //await feedAccount.preHeatLuts();
-
-
-/* 
-    const [pullIx, responses, _ok, luts] = await feedAccount.fetchUpdateIx({
-      numSignatures: 3,
-    });
- */
 
     const tx = await loudnessProgram.methods.getSoundLevel()
       .accountsPartial({
@@ -214,41 +192,64 @@ describe("anchor-loudness", () => {
     console.log("Your transaction signature", tx);
   });
 
-  it("A user should be able to get a list of submissions for a venue", async () => {
+  it("A user should be able to get a list of submissions for a venue filtering by dataSize", async () => {
     console.log("venue owner", (await connection.getAccountInfo(venue)).owner.toBase58());
     const venueOwner = (await connection.getAccountInfo(venue)).owner;
-    let gpaConfig: GetProgramAccountsConfig = {
+
+    const submissionAccountDataLength = 84;
+    let configFilter: GetProgramAccountsConfig = {
       commitment: "confirmed",  // Instead of "finalized"
       filters: [
         {
-          dataSize: 52, //size of submission account/struct
+          dataSize: submissionAccountDataLength, // Use calculated size instead of hardcoded 52
         },
-        {
+    /*     {
           memcmp: {
             bytes: user.publicKey.toBase58(), //in submission struct, concert_goer/user is after discriminator
             offset: 8,  // ✅ Skip 8-byte Anchor discriminator
           },
-        },
+        }, */
       ],
     };
     
-    console.log("RPC config:", JSON.stringify(gpaConfig, null, 2));
+    console.log("RPC config:", JSON.stringify(configFilter, null, 2));
     console.log("Program ID:", program.programId.toBase58());
 
-    let filteredAccounts = await connection.getProgramAccounts(program.programId, gpaConfig);
+    let filteredAccounts = await connection.getProgramAccounts(program.programId, configFilter);
     console.log("Filtered accounts:", filteredAccounts);
     console.log("Filtered accounts length:", filteredAccounts.length);
 
     // Then later for the debug
     let allAccounts = await connection.getProgramAccounts(program.programId);
-    let submissionAccounts = allAccounts.filter(acc => acc.account.data.length === 52);
+    let submissionAccounts = allAccounts.filter(acc => acc.account.data.length === submissionAccountDataLength);
     console.log("Submission accounts found:", submissionAccounts.length);
     assert.equal(submissionAccounts.length, 1);
   });
 
+  it("A user should be able to get a list of submissions for a venue filtering by venue key", async () => {
+   
+    let configFilter: GetProgramAccountsConfig = {
+      commitment: "confirmed",  // Instead of "finalized"
+      filters: [
+      
+        {
+          memcmp: {
+            bytes: venue.toBase58(), //in submission struct, concert_goer/user is after discriminator
+            offset: 8,  // ✅ Skip 8-byte Anchor discriminator
+          },
+        },
+      ],
+    };
+
+    let filteredAccounts = await connection.getProgramAccounts(program.programId, configFilter);
+    console.log("Filtered accounts:", filteredAccounts);
+    console.log("Filtered accounts length:", filteredAccounts.length);
+
+    assert.equal(filteredAccounts.length, 1);
+  });
+
   it("Should be able to claim 1 token for 1 submission", async () => {
 
-   // let userRewardsAta: Account;
     const userRewardsAta    = await getOrCreateAssociatedTokenAccount(
       connection,
       user,
@@ -281,7 +282,6 @@ describe("anchor-loudness", () => {
       user,
       rewardsMint,
       user.publicKey,
-  
     )
 
     const balance = await connection.getTokenAccountBalance(userRewardsAta.address);
