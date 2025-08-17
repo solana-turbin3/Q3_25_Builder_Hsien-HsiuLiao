@@ -513,19 +513,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
   },
-  walletStatus: {
-    backgroundColor: COLORS.lighterBackground,
-    borderRadius: 8,
-    padding: 8,
-    marginTop: 8,
-    alignSelf: 'center',
-  },
-  walletStatusText: {
-    fontSize: TYPOGRAPHY.size.sm,
-    color: COLORS.textLight,
-    textAlign: 'center',
-    fontWeight: TYPOGRAPHY.weights.medium,
-  },
   
   // Wallet balance styles
   walletBalanceContainer: {
@@ -605,5 +592,27 @@ export const styles = StyleSheet.create({
     fontSize: TYPOGRAPHY.size.xs,
     color: COLORS.textLight,
     fontStyle: 'italic',
+  },
+  createUserButton: {
+    backgroundColor: COLORS.brandPrimary,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  createUserButtonText: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: '600',
   },
 }); 
