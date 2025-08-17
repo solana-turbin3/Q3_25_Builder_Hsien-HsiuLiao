@@ -52,6 +52,7 @@ impl<'info> CreateSubmission<'info> {
       
       //user get 1 point for submitting a submission
       self.user_account.num_of_submissions += 1;
+      self.user_account.points_to_claim += 1;
         Ok(())
     }
 } 

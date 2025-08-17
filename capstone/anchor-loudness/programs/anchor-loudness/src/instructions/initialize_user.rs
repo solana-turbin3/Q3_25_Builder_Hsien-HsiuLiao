@@ -22,6 +22,7 @@ impl<'info> InitializeUser<'info> {
     pub fn initialize_user(&mut self, bumps: &InitializeUserBumps) -> Result<()> {
         self.user_account.set_inner(UserAccount { 
             num_of_submissions: 0, 
+            points_to_claim: 0,
             bump: bumps.user_account 
         });
 
