@@ -52,9 +52,10 @@ export default function LoudnessAppScreen() {
   
   // Submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCreatingUser, setIsCreatingUser] = useState(false);
   
   // Solana submission hook
-  const { submitLoudnessEntry, isInitialized, initializeWithMWA } = useSolanaSubmission();
+  const { submitLoudnessEntry, initializeUser, isInitialized, initializeWithMWA } = useSolanaSubmission();
   
   // Wallet connection state
   const { auth: authConfig } = useCustomization();
@@ -486,6 +487,34 @@ export default function LoudnessAppScreen() {
     }
   };
 
+  const handleCreateUserAccount = async () => {
+    if (!isInitialized) {
+      Alert.alert('Error', 'Solana service not ready. Please wait a moment and try again.');
+      return;
+    }
+
+    setIsCreatingUser(true);
+    try {
+      // Call the initialize_user instruction from the Anchor program
+      const result = await initializeUser();
+      
+      console.log('User account creation successful:', result);
+      Alert.alert(
+        'Success!',
+        `User account has been created on Solana!\n\nTransaction: ${result.signature}\nUser Account: ${result.userAccountAddress}`,
+        [{ text: 'OK' }]
+      );
+    } catch (error) {
+      console.error('Failed to create user account:', error);
+      Alert.alert(
+        'Error', 
+        'Failed to create user account on Solana. Please check your wallet connection and try again.'
+      );
+    } finally {
+      setIsCreatingUser(false);
+    }
+  };
+
   const setCurrentTimestamp = () => {
     const now = new Date();
     const timestamp = now.toISOString();
@@ -859,6 +888,15 @@ export default function LoudnessAppScreen() {
               <Text style={styles.walletStatusText}>
                 ✅ Connected to Solana
               </Text>
+              <TouchableOpacity
+                style={styles.createUserButton}
+                onPress={handleCreateUserAccount}
+                disabled={isCreatingUser}
+              >
+                <Text style={styles.createUserButtonText}>
+                  {isCreatingUser ? 'Creating...' : 'Create User Account'}
+                </Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
