@@ -48,6 +48,37 @@ export const styles = StyleSheet.create({
     height: 80,
     textAlignVertical: 'top',
   },
+  ratingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  ratingButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: COLORS.lightBackground,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.borderDarkColor,
+  },
+  ratingButtonActive: {
+    backgroundColor: COLORS.brandPrimary,
+    borderColor: COLORS.brandPrimary,
+  },
+  ratingText: {
+    fontSize: 16,
+    color: COLORS.white,
+  },
+  initializingText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    marginTop: 8,
+    fontStyle: 'italic',
+  },
   submitButton: {
     backgroundColor: COLORS.brandPrimary,
     borderRadius: 8,
@@ -170,6 +201,19 @@ export const styles = StyleSheet.create({
     fontWeight: TYPOGRAPHY.weights.regular,
     color: COLORS.textLight,
     textAlign: 'center',
+  },
+  walletStatus: {
+    backgroundColor: COLORS.lighterBackground,
+    borderRadius: 8,
+    padding: 8,
+    marginTop: 8,
+    alignSelf: 'center',
+  },
+  walletStatusText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.textLight,
+    textAlign: 'center',
+    fontWeight: TYPOGRAPHY.weights.medium,
   },
   micContainer: {
     alignItems: 'center',
