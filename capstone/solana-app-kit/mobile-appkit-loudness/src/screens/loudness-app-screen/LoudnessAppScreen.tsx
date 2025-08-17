@@ -14,6 +14,10 @@ import {
 import { Audio } from 'expo-av';
 import { computeAmplitude, load } from 'react-native-audio-analyzer';
 import { useSolanaSubmission } from '@/services/solanaSubmission';
+import { useAuth } from '@/modules/wallet-providers';
+import { useCustomization } from '@/shared/config/CustomizationProvider';
+import { useAppSelector } from '@/shared/hooks/useReduxHooks';
+import { Connection, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import COLORS from '@/assets/colors';
 import TYPOGRAPHY from '@/assets/typography';
 import { styles } from './LoudnessAppScreen.styles';
@@ -50,8 +54,20 @@ export default function LoudnessAppScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Solana submission hook
-  const { submitLoudnessEntry, isInitialized } = useSolanaSubmission();
+  const { submitLoudnessEntry, isInitialized, initializeWithMWA } = useSolanaSubmission();
   
+  // Wallet connection state
+  const { auth: authConfig } = useCustomization();
+  const { status } = useAuth();
+  const authState = useAppSelector(state => state.auth);
+  const [isConnectingWallet, setIsConnectingWallet] = useState(false);
+  
+  // Wallet balance state
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [solBalance, setSolBalance] = useState<number | null>(null);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+  const [connection, setConnection] = useState<Connection | null>(null);
+
   // Use ref to track recording state for immediate access
   const isRecordingRef = useRef(false);
   
@@ -94,6 +110,47 @@ export default function LoudnessAppScreen() {
       pulseAnim.setValue(1);
     }
   }, [isRecording, pulseAnim]);
+
+  // Initialize Solana connection
+  useEffect(() => {
+    if (walletAddress) {
+      const newConnection = new Connection('https://api.devnet.solana.com', 'confirmed');
+      setConnection(newConnection);
+    }
+  }, [walletAddress]);
+
+  // Fetch SOL balance when wallet is connected
+  useEffect(() => {
+    if (connection && walletAddress) {
+      fetchSolBalance();
+    }
+  }, [connection, walletAddress]);
+
+  // Fetch SOL balance from Solana network
+  const fetchSolBalance = async () => {
+    if (!connection || !walletAddress) return;
+    
+    setIsLoadingBalance(true);
+    try {
+      const publicKey = new PublicKey(walletAddress);
+      const balance = await connection.getBalance(publicKey);
+      const solBalance = balance / LAMPORTS_PER_SOL;
+      setSolBalance(solBalance);
+      console.log('SOL balance fetched:', solBalance);
+    } catch (error) {
+      console.error('Failed to fetch SOL balance:', error);
+      setSolBalance(null);
+    } finally {
+      setIsLoadingBalance(false);
+    }
+  };
+
+  // Refresh balance manually
+  const handleRefreshBalance = () => {
+    if (walletAddress) {
+      fetchSolBalance();
+    }
+  };
 
   const handleInputChange = (field: keyof FormData, value: string | number) => {
     setFormData(prev => ({
@@ -435,6 +492,121 @@ export default function LoudnessAppScreen() {
     handleInputChange('timestamp', timestamp);
   };
 
+  const handleConnectMWA = async () => {
+    if (isConnectingWallet) return;
+    
+    setIsConnectingWallet(true);
+    try {
+      // Check if we're on Android
+      if (Platform.OS !== 'android') {
+        Alert.alert('Not Supported', 'Mobile Wallet Adapter is only available on Android devices');
+        return;
+      }
+
+      // Import MWA dynamically to avoid issues on iOS
+      let mobileWalletAdapter;
+      try {
+        mobileWalletAdapter = require('@solana-mobile/mobile-wallet-adapter-protocol-web3js');
+      } catch (importError) {
+        console.error('Failed to import mobile-wallet-adapter:', importError);
+        Alert.alert(
+          'Not Available',
+          'Mobile Wallet Adapter is not available in this environment. Please use a development build.'
+        );
+        return;
+      }
+
+      if (!mobileWalletAdapter || !mobileWalletAdapter.transact) {
+        Alert.alert(
+          'Not Available',
+          'Mobile Wallet Adapter module is invalid or missing the transact function.'
+        );
+        return;
+      }
+
+      const { transact } = mobileWalletAdapter;
+      const { Buffer } = require('buffer');
+      const { PublicKey } = require('@solana/web3.js');
+
+      const APP_IDENTITY = {
+        name: 'Loudness App',
+        uri: 'https://loudness-app.com',
+        icon: 'favicon.ico',
+      };
+
+      const authorizationResult = await transact(async (wallet: any) => {
+        return await wallet.authorize({
+          chain: 'solana:devnet', // Use devnet for testing
+          identity: APP_IDENTITY,
+          sign_in_payload: {
+            domain: 'loudness-app.com',
+            statement: 'You are signing in to Loudness App to submit sound level data to Solana',
+            uri: 'https://loudness-app.com',
+          },
+        });
+      });
+
+      if (authorizationResult?.accounts?.length) {
+        // Convert base64 pubkey to a Solana PublicKey
+        const encodedPublicKey = authorizationResult.accounts[0].address;
+        const publicKeyBuffer = Buffer.from(encodedPublicKey, 'base64');
+        const publicKey = new PublicKey(publicKeyBuffer);
+        const base58Address = publicKey.toBase58();
+
+        console.log('MWA connection successful, address:', base58Address);
+        
+        // Set wallet address for balance fetching
+        setWalletAddress(base58Address);
+
+        // Initialize Solana service with MWA wallet
+        try {
+          await initializeWithMWA(base58Address);
+          console.log('Solana service initialized with MWA wallet');
+        } catch (error) {
+          console.error('Failed to initialize Solana service with MWA wallet:', error);
+        }
+
+        // Navigate to success or show success message
+        Alert.alert(
+          'Wallet Connected!',
+          `Successfully connected to wallet: ${base58Address.substring(0, 6)}...${base58Address.substring(base58Address.length - 4)}`,
+          [{ text: 'OK' }]
+        );
+      }
+    } catch (error) {
+      console.error('Failed to connect MWA wallet:', error);
+      Alert.alert('Connection Error', 'Failed to connect Mobile Wallet Adapter. Please try again.');
+    } finally {
+      setIsConnectingWallet(false);
+    }
+  };
+
+  const handleDisconnectWallet = () => {
+    Alert.alert(
+      'Disconnect Wallet',
+      'Are you sure you want to disconnect your wallet?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Disconnect', 
+          style: 'destructive',
+          onPress: () => {
+            // Clear wallet state
+            setWalletAddress(null);
+            setSolBalance(null);
+            setConnection(null);
+            
+            // Reset Solana service initialization
+            // Note: The useSolanaSubmission hook will handle this automatically
+            // when wallet becomes null, but we can force a reset if needed
+            
+            console.log('Wallet disconnected, state cleared');
+          }
+        }
+      ]
+    );
+  };
+
   const renderMicrophoneButton = () => (
     <View style={styles.micContainer}>
       <Text style={styles.micLabel}>Measure Sound Level</Text>
@@ -549,6 +721,117 @@ export default function LoudnessAppScreen() {
     </View>
   );
 
+  // Render wallet balance display
+  const renderWalletBalance = () => {
+    if (!walletAddress) return null;
+
+    return (
+      <View style={styles.walletBalanceContainer}>
+        <View style={styles.balanceHeader}>
+          <Text style={styles.balanceTitle}>💰 Wallet Balance</Text>
+          <TouchableOpacity 
+            style={styles.refreshButton}
+            onPress={handleRefreshBalance}
+            disabled={isLoadingBalance}
+          >
+            <Text style={styles.refreshButtonText}>
+              {isLoadingBalance ? '🔄' : '🔄'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        
+        <View style={styles.balanceDetails}>
+          <View style={styles.balanceRow}>
+            <Text style={styles.balanceLabel}>Account:</Text>
+            <Text style={styles.balanceValue}>
+              {walletAddress.substring(0, 8)}...{walletAddress.substring(walletAddress.length - 8)}
+            </Text>
+          </View>
+          
+          <View style={styles.balanceRow}>
+            <Text style={styles.balanceLabel}>SOL Balance:</Text>
+            <View style={styles.balanceValueContainer}>
+              {isLoadingBalance ? (
+                <Text style={styles.balanceLoading}>Loading...</Text>
+              ) : solBalance !== null ? (
+                <Text style={styles.balanceValue}>
+                  {solBalance.toFixed(4)} SOL
+                </Text>
+              ) : (
+                <Text style={styles.balanceError}>Failed to load</Text>
+              )}
+            </View>
+          </View>
+        </View>
+        
+        <View style={styles.networkInfo}>
+          <Text style={styles.networkText}>🌐 Connected to Solana Devnet</Text>
+        </View>
+      </View>
+    );
+  };
+
+  // Render wallet connection section
+  const renderWalletConnection = () => {
+    const isConnected = walletAddress !== null;
+
+    if (isConnected) {
+      return (
+        <View style={styles.walletConnectedContainer}>
+          <View style={styles.walletStatusConnected}>
+            <Text style={styles.walletStatusText}>✅ Wallet Connected</Text>
+            <Text style={styles.walletProviderText}>📱 Mobile Wallet Adapter</Text>
+          </View>
+          
+          {/* Wallet Balance Display */}
+          {renderWalletBalance()}
+          
+          <TouchableOpacity 
+            style={styles.disconnectButton}
+            onPress={handleDisconnectWallet}
+          >
+            <Text style={styles.disconnectButtonText}>Disconnect</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+    // Show only MWA connection option
+    const renderConnectionOptions = () => {
+      return (
+        <View style={styles.connectionOptionsContainer}>
+          <TouchableOpacity
+            style={[styles.connectButton, styles.mwaButton]}
+            onPress={handleConnectMWA}
+            disabled={isConnectingWallet}
+          >
+            <Text style={styles.connectButtonText}>📱 Connect Mobile Wallet</Text>
+          </TouchableOpacity>
+          <Text style={styles.mwaInfoText}>
+            Connect your Phantom, Solflare, or other Solana mobile wallet
+          </Text>
+        </View>
+      );
+    };
+
+    return (
+      <View style={styles.walletDisconnectedContainer}>
+        <View style={styles.walletStatusDisconnected}>
+          <Text style={styles.walletStatusText}>🔗 Connect Wallet</Text>
+          <Text style={styles.walletSubtext}>
+            Connect your mobile wallet using Mobile Wallet Adapter to submit sound level data to the Solana blockchain
+          </Text>
+        </View>
+        {renderConnectionOptions()}
+        {isConnectingWallet && (
+          <View style={styles.connectingIndicator}>
+            <Text style={styles.connectingText}>Connecting...</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -560,6 +843,10 @@ export default function LoudnessAppScreen() {
           <Text style={styles.subtitle}>
             Submit sound level data to the Solana blockchain
           </Text>
+          
+          {/* Wallet Connection Section */}
+          {renderWalletConnection()}
+          
           {!isInitialized && (
             <View style={styles.walletStatus}>
               <Text style={styles.walletStatusText}>
@@ -576,104 +863,119 @@ export default function LoudnessAppScreen() {
           )}
         </View>
 
-        {/* Microphone Section */}
-        {renderMicrophoneButton()}
+        {/* Only show microphone and form if wallet is connected */}
+        {walletAddress ? (
+          <>
+            {/* Microphone Section */}
+            {renderMicrophoneButton()}
 
-        <View style={styles.formContainer}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Venue Name *</Text>
-            <TextInput
-              style={styles.input}
-              value={formData.venueName}
-              onChangeText={(value) => handleInputChange('venueName', value)}
-              placeholder="Enter venue name"
-              placeholderTextColor={COLORS.textLight}
-            />
-          </View>
+            <View style={styles.formContainer}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Venue Name *</Text>
+                <TextInput
+                  style={styles.input}
+                  value={formData.venueName}
+                  onChangeText={(value) => handleInputChange('venueName', value)}
+                  placeholder="Enter venue name"
+                  placeholderTextColor={COLORS.textLight}
+                />
+              </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Sound Level *</Text>
-            <TextInput
-              style={styles.input}
-              value={formData.soundLevel.toString()}
-              editable={false}
-              placeholder="Use microphone to measure"
-              placeholderTextColor={COLORS.textLight}
-            />
-          </View>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Sound Level *</Text>
+                <TextInput
+                  style={styles.input}
+                  value={formData.soundLevel.toString()}
+                  editable={false}
+                  placeholder="Use microphone to measure"
+                  placeholderTextColor={COLORS.textLight}
+                />
+              </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Timestamp</Text>
-            <View style={styles.timestampContainer}>
-              <TextInput
-                style={[styles.input, styles.timestampInput]}
-                value={formData.timestamp}
-                onChangeText={(value) => handleInputChange('timestamp', value)}
-                placeholder="Auto-generated timestamp"
-                placeholderTextColor={COLORS.textLight}
-                editable={false}
-              />
-              <TouchableOpacity
-                style={styles.timestampButton}
-                onPress={setCurrentTimestamp}
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Timestamp</Text>
+                <View style={styles.timestampContainer}>
+                  <TextInput
+                    style={[styles.input, styles.timestampInput]}
+                    value={formData.timestamp}
+                    onChangeText={(value) => handleInputChange('timestamp', value)}
+                    placeholder="Auto-generated timestamp"
+                    placeholderTextColor={COLORS.textLight}
+                    editable={false}
+                  />
+                  <TouchableOpacity
+                    style={styles.timestampButton}
+                    onPress={setCurrentTimestamp}
+                  >
+                    <Text style={styles.timestampButtonText}>Now</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Seat Number *</Text>
+                <TextInput
+                  style={styles.input}
+                  value={formData.seatNumber.toString()}
+                  onChangeText={(value) => handleInputChange('seatNumber', parseInt(value) || 1)}
+                  placeholder="Enter seat number"
+                  placeholderTextColor={COLORS.textLight}
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>User Rating *</Text>
+                <View style={styles.ratingContainer}>
+                  {[1, 2, 3, 4, 5].map((rating) => (
+                    <TouchableOpacity
+                      key={rating}
+                      style={[
+                        styles.ratingButton,
+                        formData.userRating === rating && styles.ratingButtonActive
+                      ]}
+                      onPress={() => handleInputChange('userRating', rating)}
+                    >
+                      <Text style={styles.ratingText}>⭐</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              <TouchableOpacity 
+                style={styles.submitButton} 
+                onPress={handleSubmit} 
+                disabled={isSubmitting || !isInitialized}
               >
-                <Text style={styles.timestampButtonText}>Now</Text>
+                <Text style={styles.submitButtonText}>
+                  {!isInitialized ? 'Initializing...' : 
+                   isSubmitting ? 'Submitting to Blockchain...' : 
+                   'Submit to Blockchain'}
+                </Text>
               </TouchableOpacity>
+              
+              {!isInitialized && (
+                <Text style={styles.initializingText}>
+                  Connecting to Solana blockchain...
+                </Text>
+              )}
             </View>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Seat Number *</Text>
-            <TextInput
-              style={styles.input}
-              value={formData.seatNumber.toString()}
-              onChangeText={(value) => handleInputChange('seatNumber', parseInt(value) || 1)}
-              placeholder="Enter seat number"
-              placeholderTextColor={COLORS.textLight}
-              keyboardType="numeric"
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>User Rating *</Text>
-            <View style={styles.ratingContainer}>
-              {[1, 2, 3, 4, 5].map((rating) => (
-                <TouchableOpacity
-                  key={rating}
-                  style={[
-                    styles.ratingButton,
-                    formData.userRating === rating && styles.ratingButtonActive
-                  ]}
-                  onPress={() => handleInputChange('userRating', rating)}
-                >
-                  <Text style={styles.ratingText}>⭐</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-
-          <TouchableOpacity 
-            style={styles.submitButton} 
-            onPress={handleSubmit} 
-            disabled={isSubmitting || !isInitialized}
-          >
-            <Text style={styles.submitButtonText}>
-              {!isInitialized ? 'Initializing...' : 
-               isSubmitting ? 'Submitting to Blockchain...' : 
-               'Submit to Blockchain'}
+          </>
+        ) : (
+          <View style={styles.connectWalletPrompt}>
+            <Text style={styles.connectWalletPromptText}>
+              🔗 Please connect your wallet to start measuring sound levels
             </Text>
-          </TouchableOpacity>
-          
-          {!isInitialized && (
-            <Text style={styles.initializingText}>
-              Connecting to Solana blockchain...
+            <Text style={styles.connectWalletPromptSubtext}>
+              Your wallet will be used to sign transactions and submit data to the Solana blockchain
             </Text>
-          )}
-        </View>
+          </View>
+        )}
 
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>ℹ️ How it works:</Text>
           <Text style={styles.infoText}>
+            • Connect your mobile wallet using Mobile Wallet Adapter (MWA){'\n'}
             • Use the microphone button to measure real-time sound levels{'\n'}
             • Real audio analysis using logarithmic decibel conversion{'\n'}
             • Live metering values provide immediate feedback{'\n'}
