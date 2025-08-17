@@ -67,7 +67,7 @@ pub struct Claim<'info> {
 impl<'info> Claim<'info> {
     pub fn claim(&mut self) -> Result<()> {
         // Use accumulated points from user account
-        let points_to_claim = self.user_account.num_of_submissions;
+        let points_to_claim = self.user_account.points_to_claim;
         
         require!(
             points_to_claim > 0,
@@ -99,7 +99,7 @@ impl<'info> Claim<'info> {
         mint_to(cpi_ctx, tokens_to_mint as u64)?;
 
         // Reset user points to 0 after claiming
-        self.user_account.num_of_submissions = 0;
+        self.user_account.points_to_claim = 0;
 
         Ok(())
     }
