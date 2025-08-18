@@ -407,7 +407,7 @@ export default function LoudnessAppScreen() {
         } else {
           clearInterval(analysisInterval);
         }
-      }, 100); // Update every 100ms for true real-time feel
+      }, 300); // Update every 300ms for true real-time feel
       
       // Store interval reference for cleanup
       (global as any).fftAnalysisInterval = analysisInterval;
