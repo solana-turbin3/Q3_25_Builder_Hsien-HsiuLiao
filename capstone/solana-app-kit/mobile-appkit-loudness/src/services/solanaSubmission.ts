@@ -2,6 +2,8 @@ import { Connection, PublicKey, SystemProgram, Transaction } from '@solana/web3.
 import { Program, AnchorProvider, BN } from '@coral-xyz/anchor';
 import { useWallet } from '@/modules/wallet-providers/hooks/useWallet';
 import { useState, useEffect, useCallback } from 'react';
+import { IDL, ANCHOR_LOUDNESS_PROGRAM_ID, SOLANA_RPC_ENDPOINT, COMMITMENT } from '@/constants/idl';
+import { AnchorLoudness } from '@/constants/idl';
 
 // MWA Cluster ID Configuration:
 // - 'solana:devnet' - for development and testing (what we're using)
@@ -27,14 +29,6 @@ try {
 const createTimestamp = (timestamp: string): BN => {
   return new BN(Math.floor(Date.parse(timestamp) / 1000));
 };
-
-// Import the generated types and IDL directly from Anchor program build
-import { AnchorLoudness } from '../../../../anchor-loudness/target/types/anchor_loudness';
-
-// Import the updated IDL from constants (now matches Anchor-generated IDL)
-import { ANCHOR_LOUDNESS_IDL, ANCHOR_LOUDNESS_PROGRAM_ID, SOLANA_RPC_ENDPOINT, COMMITMENT } from '@/constants/idl';
-
-
 
 export class SolanaSubmissionService {
   private connection: Connection;
@@ -327,13 +321,13 @@ export class SolanaSubmissionService {
 
       // Initialize the program with the actual IDL
       console.log('Initializing Program with IDL:', {
-        idlAddress: ANCHOR_LOUDNESS_IDL.address,
-        idlInstructions: ANCHOR_LOUDNESS_IDL.instructions?.length || 0,
-        idlAccounts: ANCHOR_LOUDNESS_IDL.accounts?.length || 0,
-        idlTypes: ANCHOR_LOUDNESS_IDL.types?.length || 0
+        idlAddress: IDL.address,
+        idlInstructions: IDL.instructions?.length || 0,
+        idlAccounts: IDL.accounts?.length || 0,
+        idlTypes: IDL.types?.length || 0
       });
       
-      const program = new Program(ANCHOR_LOUDNESS_IDL as any, provider);
+      const program = new Program(IDL as any, provider);
       console.log('Program initialized successfully with program ID:', program.programId.toString());
 
       return new SolanaSubmissionService(connection, program, wallet);
