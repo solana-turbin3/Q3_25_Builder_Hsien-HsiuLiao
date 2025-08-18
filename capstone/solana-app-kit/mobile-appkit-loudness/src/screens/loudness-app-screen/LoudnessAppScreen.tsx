@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Animated,
+  Linking,
 } from 'react-native';
 import { Audio } from 'expo-av';
 import { computeAmplitude, load } from 'react-native-audio-analyzer';
@@ -456,10 +457,21 @@ export default function LoudnessAppScreen() {
       });
       
       console.log('Blockchain submission successful:', result);
+      
+      // Create the explorer URL for devnet
+      const explorerUrl = `https://explorer.solana.com/tx/${result.signature}?cluster=devnet`;
+      
       Alert.alert(
         'Success!',
         `Your loudness data has been submitted to the Solana blockchain!\n\nTransaction: ${result.signature}\nSubmission Address: ${result.submissionAddress}`,
         [
+          {
+            text: 'View on Explorer',
+            onPress: () => {
+              // Open the Solana Explorer in the device's browser
+              Linking.openURL(explorerUrl);
+            },
+          },
           {
             text: 'OK',
             onPress: () => {
@@ -499,10 +511,23 @@ export default function LoudnessAppScreen() {
       const result = await initializeUser();
       
       console.log('User account creation successful:', result);
+      
+      // Create the explorer URL for devnet
+      const explorerUrl = `https://explorer.solana.com/tx/${result.signature}?cluster=devnet`;
+      
       Alert.alert(
         'Success!',
         `User account has been created on Solana!\n\nTransaction: ${result.signature}\nUser Account: ${result.userAccountAddress}`,
-        [{ text: 'OK' }]
+        [
+          {
+            text: 'View on Explorer',
+            onPress: () => {
+              // Open the Solana Explorer in the device's browser
+              Linking.openURL(explorerUrl);
+            },
+          },
+          { text: 'OK' },
+        ]
       );
     } catch (error) {
       console.error('Failed to create user account:', error);
