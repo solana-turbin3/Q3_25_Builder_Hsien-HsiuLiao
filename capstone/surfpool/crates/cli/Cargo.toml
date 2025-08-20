@@ -1,0 +1,71 @@
+[package]
+name = "surfpool-cli"
+description = "Where you train before surfing Solana"
+readme = { workspace = true }
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+keywords = { workspace = true }
+categories = { workspace = true }
+
+[[bin]]
+name = "surfpool"
+path = "src/main.rs"
+
+[dependencies]
+actix-cors = "0.7.0"
+actix-web = "4"
+ansi_term = "0.12.1"
+anyhow = "1.0.95"
+atty = "0.2.13"
+chrono = "0.4"
+clap = { version = "4.5.27", features = ["derive"], optional = true }
+clap_complete = "4.5.44"
+convert_case = { workspace = true }
+crossbeam = "0.8.4"
+crossterm = "0.28.1"
+ctrlc = { version = "3.4.5", optional = true }
+dialoguer = "0.11.0"
+dirs = "6.0.0"
+hiro-system-kit = "0.3.1"
+juniper_actix = { version = "0.6.0", features = ["subscriptions"] }
+juniper_graphql_ws = { version = "0.4.0", features = ["graphql-transport-ws"] }
+lazy_static = "1.5.0"
+mime_guess = "2.0.4"
+mustache = "0.9.0"
+notify = { version = "8.0.0" }
+ratatui = "0.29.0"
+rust-embed = "8.2.0"
+serde = "1.0.217"
+serde_json = "1.0.138"
+solana-clock = { workspace = true }
+solana-commitment-config = { workspace = true }
+solana-epoch-info = { workspace = true }
+solana-keypair = { workspace = true }
+solana-message = { workspace = true }
+solana-pubkey = { workspace = true }
+solana-signer = { workspace = true }
+solana-system-interface = { workspace = true }
+solana-transaction = { workspace = true }
+surfpool-core = { workspace = true }
+surfpool-gql = { workspace = true }
+surfpool-types = { workspace = true }
+surfpool-mcp = { workspace = true }
+surfpool-studio-ui = { workspace = true }
+tokio = { workspace = true }
+toml = { version = "0.8.2", features = ["preserve_order"], optional = true }
+txtx-addon-network-svm = { workspace = true }
+txtx-core = { workspace = true }
+txtx-gql = { workspace = true }
+txtx-cloud = { workspace = true }
+txtx-supervisor-ui = { workspace = true, optional = true }
+url = "2.5.4"
+
+[features]
+default = ["cli", "sqlite"]
+cli = ["clap", "toml", "ctrlc", "hiro-system-kit/log"]
+supervisor_ui = ["txtx-supervisor-ui"]
+explorer = []
+geyser-plugin = ["surfpool-core/geyser-plugin"]
+sqlite = ["surfpool-gql/sqlite"]

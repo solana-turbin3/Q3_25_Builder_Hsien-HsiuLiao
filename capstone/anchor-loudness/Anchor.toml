@@ -6,14 +6,10 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-anchor_loudness = "3chRm8Uw232StQpy6G5nVAokSz7bTiUN4e6pvB95PRw2"
+anchor_loudness = "95jTSWUMS6XQWZxPBwNxhyTJmTZBf7sFCWoPBqsgRK2n"
 
 [registry]
 url = "https://api.apr.dev"
-
-#[provider]
-#cluster = "localnet"
-#wallet = "~/.config/solana/id.json"
 
 [provider]
 cluster = "devnet"
@@ -22,12 +18,13 @@ wallet = "../Turbin3-wallet.json"
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 
-#https://www.anchor-lang.com/docs/references/anchor-toml#testvalidator
+[test]
+startup_wait = 5000
+shutdown_wait = 2000
+upgradeable = false
 
 [test.validator]
+bind_address = "0.0.0.0"
 url = "https://api.devnet.solana.com"
-#url = "https://turbine-solanad-4cde.devnet.rpcpool.com/168dd64f-ce5e-4e19-a836-f6482ad6b396"
-
-#[[test.validator.clone]]
-#address = "6JgUWRNpHJFYP3qCzHzzjCTnMCrZ9hb1RLGUuZrMt8eB" #mock data feed sound level from phone mic
-
+ledger = ".anchor/test-ledger"
+rpc_port = 8899

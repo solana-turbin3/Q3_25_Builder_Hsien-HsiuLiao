@@ -100,10 +100,10 @@ describe("anchor-loudness tests", () => {
 
 
   //airdrop
-  xit("Airdrop", async () => {
+ /*  it("Airdrop", async () => {
     await anchor.getProvider().connection.requestAirdrop(admin.publicKey, 2 * LAMPORTS_PER_SOL)
       .then(confirmTx);
-  });
+  }); */
 
   it("Initialize Config Account", async () => {
     const tx = await program.methods.initializeConfig()
@@ -203,12 +203,7 @@ describe("anchor-loudness tests", () => {
         {
           dataSize: submissionAccountDataLength, // Use calculated size instead of hardcoded 52
         },
-    /*     {
-          memcmp: {
-            bytes: user.publicKey.toBase58(), //in submission struct, concert_goer/user is after discriminator
-            offset: 8,  // ✅ Skip 8-byte Anchor discriminator
-          },
-        }, */
+  
       ],
     };
     
@@ -337,7 +332,7 @@ describe("anchor-loudness tests", () => {
     console.log("Your transaction signature", tx);
   });
 
-  it("Close Config Account", async () => {
+   it("Close Config Account", async () => {
     console.log("Config account owner:", (await program.provider.connection.getAccountInfo(config))?.owner.toBase58());
     console.log("Rewards mint owner:", (await program.provider.connection.getAccountInfo(rewardsMint))?.owner.toBase58());
     const tx = await program.methods.closeConfig()
